@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b3d3b" />
+    <title>Mi cuenta · Trebol4Devop</title>
+    <style>
+      :root {
+        --ink: #172525;
+        --muted: #5d6f6d;
+        --paper: #f7f4ec;
+        --card: #ffffff;
+        --green: #0b3d3b;
+        --green-2: #145a55;
+        --gold: #d8a24a;
+        --gold-soft: #f3dfb9;
+        --line: #dde5e1;
+        --danger: #a52a2a;
+        --success: #167a4a;
+        --radius: 18px;
+        --shadow: 0 18px 50px rgba(12, 45, 43, 0.12);
+      }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        background:
+          radial-gradient(1200px 600px at 10% -10%, #e7f0e9 0%, transparent 55%),
+          radial-gradient(900px 500px at 100% 0%, #f6ead2 0%, transparent 45%),
+          var(--paper);
+        color: var(--ink);
+        font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+        min-height: 100vh;
+      }
+      a { color: var(--green-2); }
+      .site-header { background: var(--green); color: #fff; padding: 18px 0; box-shadow: 0 8px 24px rgba(11, 61, 59, .18); }
+      .shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+      .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+      .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+      .brand-mark { width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(145deg, var(--gold), #b97d26); color: #1f2d12; font-weight: 900; font-size: 20px; }
+      .brand-name { font-weight: 800; font-size: 18px; }
+      .brand-sub { color: #cfe1dc; font-size: 12px; }
+      .header-actions { display: flex; align-items: center; gap: 10px; }
+      .pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: #e8f2ef; border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 600; }
+      .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 12px; padding: 11px 16px; font: inherit; font-weight: 800; cursor: pointer; text-decoration: none; font-size: 14px; }
+      .btn-primary { background: linear-gradient(145deg, var(--green), var(--green-2)); color: #fff; }
+      .btn-ghost { background: #eef4f0; color: var(--green); }
+      .btn-light { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.2); }
+      .btn-danger { background: #fff1f1; color: var(--danger); }
+      .btn:disabled { opacity: .6; cursor: wait; }
+      .hero { padding: 30px 0 10px; }
+      .eyebrow { display: inline-block; color: var(--green-2); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+      h1 { font-size: clamp(26px, 4vw, 40px); line-height: 1.1; margin: 0 0 8px; }
+      .lede { color: var(--muted); margin: 0; max-width: 70ch; }
+      .card { background: var(--card); border: 1px solid rgba(11, 61, 59, .08); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; }
+      .login-card { max-width: 520px; margin: 34px auto; }
+      .login-card h2 { margin: 0 0 4px; font-size: 22px; }
+      .login-card p { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+      .field { display: grid; gap: 6px; margin-bottom: 12px; }
+      label { font-size: 12px; font-weight: 800; color: var(--green); }
+      input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 11px; padding: 11px 12px; font: inherit; font-size: 14px; background: #fcfdfb; color: var(--ink); outline: none; }
+      input:focus { border-color: var(--green-2); box-shadow: 0 0 0 3px rgba(20, 90, 85, .12); }
+      .error { display: none; margin-top: 12px; border: 1px solid #f0c9c9; background: #fff3f3; color: var(--danger); border-radius: 12px; padding: 12px 14px; font-size: 13px; font-weight: 600; }
+      .error.show { display: block; }
+      .ok { display: none; margin-top: 12px; border: 1px solid #c8ead8; background: #effaf4; color: var(--success); border-radius: 12px; padding: 12px 14px; font-size: 13px; font-weight: 600; }
+      .ok.show { display: block; }
+      .portal-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; padding: 22px 0 12px; }
+      .portal-head h2 { margin: 0; font-size: 24px; }
+      .portal-head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+      .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 20px; }
+      .tab { border: 1px solid var(--line); background: #fff; color: var(--green); padding: 10px 14px; border-radius: 999px; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+      .tab.active { background: var(--green); color: #fff; border-color: var(--green); }
+      .tab-panel { padding-bottom: 40px; }
+      .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 18px; }
+      .stat { background: var(--card); border: 1px solid rgba(11, 61, 59, .08); border-radius: 16px; padding: 18px; box-shadow: 0 10px 28px rgba(12,45,43,.08); }
+      .stat-label { color: var(--muted); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+      .stat-value { font-size: 26px; font-weight: 900; color: var(--green); margin-top: 4px; }
+      .list { display: grid; gap: 14px; }
+      .row-card { background: var(--card); border: 1px solid rgba(11, 61, 59, .08); border-radius: 16px; padding: 18px; box-shadow: 0 10px 28px rgba(12,45,43,.07); display: grid; gap: 10px; }
+      .row-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+      .row-title { font-weight: 900; font-size: 16px; margin: 0; }
+      .row-meta { color: var(--muted); font-size: 13px; }
+      .row-lines { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 13px; }
+      .badge { display: inline-block; background: #eef4f0; color: var(--green); border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 800; }
+      .badge.gold { background: #fff5e3; color: #7b5a1a; }
+      .badge.red { background: #fff1f1; color: var(--danger); }
+      .row-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+      .empty { color: var(--muted); text-align: center; padding: 34px 14px; }
+      .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .profile-grid .full { grid-column: 1 / -1; }
+      footer { color: var(--muted); font-size: 12px; text-align: center; padding: 24px 0 40px; }
+      @media (max-width: 620px) { .profile-grid { grid-template-columns: 1fr; } .header-actions .pill { display: none; } }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/checkout">
+          <span class="brand-mark">T4</span>
+          <span>
+            <span class="brand-name">Trebol4Devop</span><br />
+            <span class="brand-sub">Portal de clientes</span>
+          </span>
+        </a>
+        <div class="header-actions">
+          <span class="pill">🔒 Datos respaldados por Odoo</span>
+          <button id="logout" class="btn btn-light" type="button" hidden>Cerrar sesión</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <span class="eyebrow">Área de clientes</span>
+        <h1>Tu cuenta Trebol4Devop</h1>
+        <p class="lede">Consulta tus cotizaciones, pedidos y facturas, descarga tus PDFs y actualiza tus datos.</p>
+      </section>
+
+      <section id="login" class="card login-card">
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa el correo con el que compraste y el código de acceso de la demo.</p>
+        <form id="login-form">
+          <div class="field">
+            <label for="login-email">Correo electrónico</label>
+            <input id="login-email" type="email" autocomplete="email" required placeholder="cliente@empresa.com" />
+          </div>
+          <div class="field">
+            <label for="login-code">Código de acceso</label>
+            <input id="login-code" type="password" autocomplete="current-password" required placeholder="Código de la demo" />
+          </div>
+          <button id="login-submit" class="btn btn-primary" type="submit" style="width:100%">Entrar a mi cuenta</button>
+          <div id="login-error" class="error" role="alert"></div>
+          <p style="margin-top:14px;font-size:12px">Código de demostración: <code>trebol2026</code></p>
+        </form>
+      </section>
+
+      <section id="app" hidden>
+        <div class="portal-head">
+          <div>
+            <h2 id="welcome">Hola</h2>
+            <p id="welcome-sub">Este es el resumen de tu cuenta.</p>
+          </div>
+          <a class="btn btn-ghost" href="/checkout">Volver a la tienda</a>
+        </div>
+
+        <nav class="tabs" aria-label="Secciones del portal">
+          <button class="tab active" type="button" data-tab="summary">Resumen</button>
+          <button class="tab" type="button" data-tab="quotes">Cotizaciones</button>
+          <button class="tab" type="button" data-tab="orders">Pedidos</button>
+          <button class="tab" type="button" data-tab="invoices">Facturas</button>
+          <button class="tab" type="button" data-tab="profile">Mi perfil</button>
+        </nav>
+
+        <div id="app-error" class="error" role="alert"></div>
+        <div id="app-ok" class="ok" role="status"></div>
+
+        <section id="tab-summary" class="tab-panel">
+          <div id="summary-cards" class="summary-grid"></div>
+          <div class="card">
+            <h3 style="margin-top:0">Accesos rápidos</h3>
+            <p class="row-meta">Descarga tus documentos o revisa el estado de tus pedidos.</p>
+            <div class="row-actions">
+              <button class="btn btn-ghost" type="button" data-go="orders">Ver mis pedidos</button>
+              <button class="btn btn-ghost" type="button" data-go="invoices">Ver mis facturas</button>
+              <button class="btn btn-ghost" type="button" data-go="quotes">Ver mis cotizaciones</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-quotes" class="tab-panel" hidden>
+          <div id="quotes-list" class="list"></div>
+        </section>
+
+        <section id="tab-orders" class="tab-panel" hidden>
+          <div id="orders-list" class="list"></div>
+        </section>
+
+        <section id="tab-invoices" class="tab-panel" hidden>
+          <div id="invoices-list" class="list"></div>
+        </section>
+
+        <section id="tab-profile" class="tab-panel" hidden>
+          <div class="card">
+            <h3 style="margin-top:0">Datos de facturación</h3>
+            <form id="profile-form">
+              <div class="profile-grid">
+                <div class="field"><label for="p-name">Nombre</label><input id="p-name" required maxlength="160" /></div>
+                <div class="field"><label for="p-vat">NIT</label><input id="p-vat" maxlength="40" /></div>
+                <div class="field"><label for="p-phone">Teléfono</label><input id="p-phone" maxlength="40" /></div>
+                <div class="field"><label for="p-city">Ciudad</label><input id="p-city" maxlength="120" /></div>
+                <div class="field full"><label for="p-street">Dirección</label><input id="p-street" maxlength="200" /></div>
+              </div>
+              <button id="profile-submit" class="btn btn-primary" type="submit">Guardar cambios</button>
+            </form>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer>Trebol4Devop · Portal conectado a Odoo 16 · Precios en GTQ · IVA 12% incluido</footer>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const API = "/api/portal";
+        const TOKEN_KEY = "trebol_portal_token";
+        const state = {
+          token: "",
+          summary: null,
+          quotes: [],
+          orders: [],
+          invoices: [],
+          profile: null,
+          busy: false,
+        };
+
+        const $ = (id) => document.getElementById(id);
+        const money = (value, currency = "GTQ") =>
+          new Intl.NumberFormat("es-GT", {
+            style: "currency",
+            currency,
+            minimumFractionDigits: 2,
+          }).format(Number(value) || 0);
+        const escapeHtml = (value) =>
+          String(value ?? "").replace(/[&<>"']/g, (char) => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+          })[char]);
+        const dateLabel = (value) => {
+          if (!value) return "—";
+          const date = new Date(String(value).length === 10 ? `${value}T12:00:00` : value);
+          return Number.isNaN(date.getTime())
+            ? String(value)
+            : date.toLocaleDateString("es-GT", { day: "2-digit", month: "short", year: "numeric" });
+        };
+
+        function showError(message) {
+          const box = $("app-error");
+          box.textContent = message;
+          box.classList.add("show");
+          box.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        function clearError() {
+          $("app-error").classList.remove("show");
+          $("app-error").textContent = "";
+        }
+        function showOk(message) {
+          const box = $("app-ok");
+          box.textContent = message;
+          box.classList.add("show");
+          setTimeout(() => box.classList.remove("show"), 4000);
+        }
+
+        async function api(path, options = {}) {
+          const headers = {
+            "Content-Type": "application/json",
+            ...(state.token ? { Authorization: `Bearer ${state.token}` } : {}),
+          };
+          const response = await fetch(`${API}${path}`, {
+            method: options.method || "GET",
+            headers,
+            body: options.body === undefined ? undefined : JSON.stringify(options.body),
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (response.status === 401) {
+            logout();
+            throw new Error(payload.error || "Tu sesión expiró. Inicia de nuevo.");
+          }
+          if (!response.ok || payload.ok === false) {
+            throw new Error(payload.error || `No se pudo completar la solicitud (HTTP ${response.status})`);
+          }
+          return payload.data;
+        }
+
+        function setTab(name) {
+          document.querySelectorAll(".tab").forEach((button) => {
+            button.classList.toggle("active", button.dataset.tab === name);
+          });
+          document.querySelectorAll(".tab-panel").forEach((panel) => {
+            panel.hidden = panel.id !== `tab-${name}`;
+          });
+        }
+
+        function renderSummary() {
+          const data = state.summary;
+          if (!data) return;
+          $("welcome").textContent = `Hola, ${data.customer.name}`;
+          $("welcome-sub").textContent = data.customer.company
+            ? `${data.customer.company} · ${data.customer.email}`
+            : data.customer.email;
+          const cards = [
+            ["Cotizaciones pendientes", data.quotes, "quotes"],
+            ["Pedidos", data.orders, "orders"],
+            ["Facturas pendientes", data.pendingInvoices, "invoices"],
+            ["Saldo pendiente", data.amountDueLabel, "invoices"],
+          ];
+          $("summary-cards").innerHTML = cards
+            .map(
+              ([label, value, tab]) => `
+                <button class="stat" type="button" data-go="${tab}" style="text-align:left;cursor:pointer">
+                  <div class="stat-label">${escapeHtml(label)}</div>
+                  <div class="stat-value">${escapeHtml(value)}</div>
+                </button>
+              `,
+            )
+            .join("");
+        }
+
+        function renderQuotes() {
+          const list = $("quotes-list");
+          if (!state.quotes.length) {
+            list.innerHTML = `<div class="empty">No tienes cotizaciones todavía.</div>`;
+            return;
+          }
+          list.innerHTML = state.quotes
+            .map(
+              (quote) => `
+                <article class="row-card">
+                  <div class="row-top">
+                    <div>
+                      <p class="row-title">${escapeHtml(quote.name)}</p>
+                      <div class="row-meta">Emitida ${dateLabel(quote.date)} · Válida hasta ${dateLabel(quote.validUntil)}</div>
+                    </div>
+                    <span class="badge ${quote.state === "Aprobada" ? "" : "gold"}">${escapeHtml(quote.state)}</span>
+                  </div>
+                  <div class="row-lines">
+                    <span>Total: <strong>${escapeHtml(quote.totalLabel)}</strong></span>
+                  </div>
+                  <div class="row-actions">
+                    ${quote.canAccept ? `<button class="btn btn-primary" type="button" data-accept="${quote.id}">Aceptar cotización</button>` : ""}
+                  </div>
+                </article>
+              `,
+            )
+            .join("");
+        }
+
+        function renderOrders() {
+          const list = $("orders-list");
+          if (!state.orders.length) {
+            list.innerHTML = `<div class="empty">No tienes pedidos todavía.</div>`;
+            return;
+          }
+          list.innerHTML = state.orders
+            .map(
+              (order) => `
+                <article class="row-card">
+                  <div class="row-top">
+                    <div>
+                      <p class="row-title">${escapeHtml(order.name)}${order.wixNumber ? ` · ${escapeHtml(order.wixNumber)}` : ""}</p>
+                      <div class="row-meta">${dateLabel(order.date)} · ${escapeHtml(order.stage)}</div>
+                    </div>
+                    <span class="badge">${escapeHtml(order.totalLabel)}</span>
+                  </div>
+                  <div class="row-lines">
+                    ${order.invoices.map((invoice) => `<span>Factura ${escapeHtml(invoice.name)} · ${escapeHtml(invoice.status)}</span>`).join("") || "<span>Sin factura</span>"}
+                    ${order.delivery.map((delivery) => `<span>Entrega ${escapeHtml(delivery.name)} · ${escapeHtml(delivery.state)}</span>`).join("")}
+                  </div>
+                  <div class="row-actions">
+                    ${order.invoices.map((invoice) => `<button class="btn btn-ghost" type="button" data-pdf="invoice" data-id="${invoice.id}">Factura PDF</button>`).join("")}
+                    ${order.canSimulatePayment ? `<button class="btn btn-primary" type="button" data-pay="${order.id}">Simular pago</button>` : ""}
+                  </div>
+                </article>
+              `,
+            )
+            .join("");
+        }
+
+        function renderInvoices() {
+          const list = $("invoices-list");
+          if (!state.invoices.length) {
+            list.innerHTML = `<div class="empty">No tienes facturas todavía.</div>`;
+            return;
+          }
+          list.innerHTML = state.invoices
+            .map(
+              (invoice) => `
+                <article class="row-card">
+                  <div class="row-top">
+                    <div>
+                      <p class="row-title">${escapeHtml(invoice.name)}</p>
+                      <div class="row-meta">Emitida ${dateLabel(invoice.date)} · Vence ${dateLabel(invoice.dueDate)}</div>
+                    </div>
+                    <span class="badge ${invoice.canPay ? "gold" : ""}">${escapeHtml(invoice.status)}</span>
+                  </div>
+                  <div class="row-lines">
+                    <span>Total: <strong>${escapeHtml(invoice.totalLabel)}</strong></span>
+                    <span>Saldo: <strong>${escapeHtml(invoice.residualLabel)}</strong></span>
+                  </div>
+                  <div class="row-actions">
+                    <button class="btn btn-ghost" type="button" data-pdf="invoice" data-id="${invoice.id}">Descargar PDF</button>
+                  </div>
+                </article>
+              `,
+            )
+            .join("");
+        }
+
+        function renderProfile() {
+          const data = state.profile;
+          if (!data) return;
+          $("p-name").value = data.name || "";
+          $("p-vat").value = data.vat || "";
+          $("p-phone").value = data.phone || "";
+          $("p-city").value = data.city || "";
+          $("p-street").value = data.street || "";
+        }
+
+        async function loadAll() {
+          const [summary, quotes, orders, invoices, profile] = await Promise.all([
+            api("/summary"),
+            api("/quotes"),
+            api("/orders"),
+            api("/invoices"),
+            api("/profile"),
+          ]);
+          state.summary = summary;
+          state.quotes = quotes;
+          state.orders = orders;
+          state.invoices = invoices;
+          state.profile = profile;
+          renderSummary();
+          renderQuotes();
+          renderOrders();
+          renderInvoices();
+          renderProfile();
+        }
+
+        function showApp() {
+          $("login").hidden = true;
+          $("app").hidden = false;
+          $("logout").hidden = false;
+        }
+
+        function showLogin() {
+          $("login").hidden = false;
+          $("app").hidden = true;
+          $("logout").hidden = true;
+        }
+
+        function logout() {
+          state.token = "";
+          try {
+            localStorage.removeItem(TOKEN_KEY);
+          } catch (error) {
+            /* noop */
+          }
+          showLogin();
+        }
+
+        async function login(event) {
+          event.preventDefault();
+          const button = $("login-submit");
+          const email = $("login-email").value.trim();
+          const code = $("login-code").value.trim();
+          $("login-error").classList.remove("show");
+          button.disabled = true;
+          button.textContent = "Entrando…";
+          try {
+            const response = await fetch(`${API}/login`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, code }),
+            });
+            const payload = await response.json().catch(() => ({}));
+            if (!response.ok || payload.ok === false) {
+              throw new Error(payload.error || "No se pudo iniciar sesión");
+            }
+            state.token = payload.data.token;
+            try {
+              localStorage.setItem(TOKEN_KEY, state.token);
+            } catch (error) {
+              /* noop */
+            }
+            showApp();
+            await loadAll();
+          } catch (error) {
+            const box = $("login-error");
+            box.textContent = error instanceof Error ? error.message : "No se pudo iniciar sesión";
+            box.classList.add("show");
+          } finally {
+            button.disabled = false;
+            button.textContent = "Entrar a mi cuenta";
+          }
+        }
+
+        async function acceptQuote(id) {
+          if (!confirm("¿Aceptar esta cotización y generar el pedido/factura?")) return;
+          clearError();
+          try {
+            await api(`/quotes/${id}/accept`, { method: "POST", body: {} });
+            showOk("Cotización aceptada. Tu pedido y factura ya están en Odoo.");
+            await loadAll();
+          } catch (error) {
+            showError(error.message);
+          }
+        }
+
+        async function simulatePayment(id) {
+          if (!confirm("¿Registrar el pago simulado de este pedido?")) return;
+          clearError();
+          try {
+            await api(`/orders/${id}/simulate-payment`, { method: "POST", body: {} });
+            showOk("Pago registrado en Odoo.");
+            await loadAll();
+          } catch (error) {
+            showError(error.message);
+          }
+        }
+
+        async function openPdf(type, id) {
+          clearError();
+          try {
+            const data = await api("/pdf-token", {
+              method: "POST",
+              body: { type, id: Number(id) },
+            });
+            window.open(data.url, "_blank", "noopener");
+          } catch (error) {
+            showError(error.message);
+          }
+        }
+
+        async function saveProfile(event) {
+          event.preventDefault();
+          const button = $("profile-submit");
+          button.disabled = true;
+          clearError();
+          try {
+            state.profile = await api("/profile", {
+              method: "PUT",
+              body: {
+                name: $("p-name").value.trim(),
+                vat: $("p-vat").value.trim(),
+                phone: $("p-phone").value.trim(),
+                city: $("p-city").value.trim(),
+                street: $("p-street").value.trim(),
+              },
+            });
+            showOk("Datos actualizados en Odoo.");
+            renderProfile();
+          } catch (error) {
+            showError(error.message);
+          } finally {
+            button.disabled = false;
+          }
+        }
+
+        function bindEvents() {
+          $("login-form").addEventListener("submit", login);
+          $("logout").addEventListener("click", logout);
+          $("profile-form").addEventListener("submit", saveProfile);
+
+          document.querySelectorAll(".tab").forEach((button) => {
+            button.addEventListener("click", () => setTab(button.dataset.tab));
+          });
+
+          document.addEventListener("click", (event) => {
+            const go = event.target.closest("[data-go]");
+            if (go) {
+              setTab(go.getAttribute("data-go"));
+              return;
+            }
+            const accept = event.target.closest("[data-accept]");
+            if (accept) {
+              acceptQuote(accept.getAttribute("data-accept"));
+              return;
+            }
+            const pay = event.target.closest("[data-pay]");
+            if (pay) {
+              simulatePayment(pay.getAttribute("data-pay"));
+              return;
+            }
+            const pdf = event.target.closest("[data-pdf]");
+            if (pdf) {
+              openPdf(pdf.getAttribute("data-pdf"), pdf.getAttribute("data-id"));
+            }
+          });
+        }
+
+        async function init() {
+          bindEvents();
+          const params = new URLSearchParams(location.search);
+          const urlToken = params.get("token");
+          let stored = "";
+          try {
+            stored = localStorage.getItem(TOKEN_KEY) || "";
+          } catch (error) {
+            stored = "";
+          }
+          state.token = urlToken || stored;
+
+          if (urlToken) {
+            try {
+              localStorage.setItem(TOKEN_KEY, urlToken);
+            } catch (error) {
+              /* noop */
+            }
+            params.delete("token");
+            const query = params.toString();
+            history.replaceState({}, "", `${location.pathname}${query ? `?${query}` : ""}`);
+          }
+
+          if (!state.token) {
+            showLogin();
+            return;
+          }
+
+          showApp();
+          try {
+            await loadAll();
+          } catch (error) {
+            showError(error.message);
+            if (!state.token) showLogin();
+          }
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
