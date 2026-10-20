@@ -1,0 +1,62 @@
+// backend/bridge.jsw
+// Comunicación segura entre Wix y el bridge de Trebol4Devop.
+// Los secretos se configuran en Wix → Dev Mode → Secrets Manager.
+
+import { fetch } from "wix-fetch";
+import { getSecret } from "wix-secrets-backend";
+
+async function getConfig() {
+  const [baseUrl, apiKey] = await Promise.all([
+    getSecret("BRIDGE_URL"),
+    getSecret("BRIDGE_KEY"),
+  ]);
+
+  if (!baseUrl || !apiKey) {
+    throw new Error(
+      "Faltan los secretos BRIDGE_URL y/o BRIDGE_KEY en Wix Secrets Manager",
+    );
+  }
+
+  return {
+    baseUrl: String(baseUrl).replace(/\/+$/, ""),
+    apiKey: String(apiKey),
+  };
+}
+
+export async function getBridgePublicUrl() {
+  const { baseUrl } = await getConfig();
+  return baseUrl;
+}
+
+export async function callBridge(path, options = {}) {
+  const { method = "POST", body = {}, memberEmail = "" } = options;
+  const { baseUrl, apiKey } = await getConfig();
+
+  const headers = {
+    "Content-Type": "application/json",
+    "x-bridge-key": apiKey,
+  };
+  if (memberEmail) {
+    headers["x-member-email"] = memberEmail;
+  }
+
+  const response = await fetch(`${baseUrl}${path}`, {
+    method,
+    headers,
+    body: method === "GET" ? undefined : JSON.stringify(body),
+  });
+
+  const text = await response.text();
+  let payload;
+  try {
+    payload = JSON.parse(text);
+  } catch (error) {
+    payload = { ok: false, error: `Respuesta no JSON del bridge: ${text}` };
+  }
+
+  if (!response.ok || payload.ok === false) {
+    throw new Error(payload.error || `Bridge respondió HTTP ${response.status}`);
+  }
+
+  return payload;
+}

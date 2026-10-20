@@ -1,0 +1,170 @@
+// backend/portal.jsw
+// Funciones que consumen las páginas del portal de clientes.
+
+import { currentMember } from "wix-members-backend";
+import { callBridge, getBridgePublicUrl } from "./bridge";
+
+async function currentEmail() {
+  try {
+    const member = await currentMember.getMember({ fieldsets: ["FULL"] });
+    return (
+      member?.loginEmail ||
+      member?.contactDetails?.emails?.[0] ||
+      ""
+    );
+  } catch (error) {
+    return "";
+  }
+}
+
+async function memberEmailOrThrow() {
+  const email = await currentEmail();
+  if (!email) {
+    throw new Error("Debes iniciar sesión para acceder a tu cuenta.");
+  }
+  return email;
+}
+
+export async function getSummary() {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/summary", {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getQuotes() {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/quotes", {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getQuoteDetail(id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge(`/api/portal/quotes/${id}`, {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function acceptQuote(id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge(`/api/portal/quotes/${id}/accept`, {
+    body: {},
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getOrders() {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/orders", {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getOrderDetail(id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge(`/api/portal/orders/${id}`, {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function simulatePayment(id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge(`/api/portal/orders/${id}/simulate-payment`, {
+    body: {},
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getInvoices() {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/invoices", {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getInvoiceDetail(id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge(`/api/portal/invoices/${id}`, {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getProfile() {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/profile", {
+    method: "GET",
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function updateProfile(profile) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/profile", {
+    method: "PUT",
+    body: profile,
+    memberEmail: email,
+  });
+  return response.data;
+}
+
+export async function getPdfUrl(type, id) {
+  const email = await memberEmailOrThrow();
+  const response = await callBridge("/api/portal/pdf-token", {
+    body: { type, id },
+    memberEmail: email,
+  });
+  return response.data.url;
+}
+
+export async function getCatalog() {
+  const response = await callBridge("/api/catalog", { method: "GET" });
+  return response.data;
+}
+
+export async function requestQuote(form) {
+  const email = await currentEmail();
+  const response = await callBridge("/api/wix/quote-request", {
+    body: { ...form, email: form.email || email },
+  });
+  return response;
+}
+
+/**
+ * Construye la URL del checkout propio (bridge) a partir del carrito Velo.
+ * El checkout se abre fuera de Wix para no depender del plan Premium.
+ */
+export async function getCheckoutUrl(items, backUrl = "") {
+  if (!Array.isArray(items) || !items.length) {
+    throw new Error("El carrito está vacío.");
+  }
+
+  const baseUrl = await getBridgePublicUrl();
+  const encodedItems = items
+    .map((item) => `${encodeURIComponent(item.sku)}:${Number(item.quantity) || 1}`)
+    .join(",");
+
+  const params = [`items=${encodedItems}`];
+  if (backUrl) {
+    params.push(`back=${encodeURIComponent(backUrl)}`);
+  }
+
+  return `${baseUrl}/checkout?${params.join("&")}`;
+}
