@@ -1,0 +1,18 @@
+# Imagen base: Odoo 16 Community + PostgreSQL + wkhtmltopdf ya validados en Fase 2.
+# Se reutiliza la imagen publicada para conservar exactamente la misma versión de Odoo
+# (16.0-20260914) con la que fue creada la base de datos Trebol4Devop.
+FROM 0520josem/trebol4devop:fase3-bi
+
+USER root
+
+RUN mkdir -p /mnt/extra-addons /mnt/assets/products
+
+COPY odoo/odoo.conf /etc/odoo/odoo.conf
+COPY odoo/addons /mnt/extra-addons
+COPY assets/products /mnt/assets/products
+
+EXPOSE 8069
+
+# -i es idempotente: en el primer arranque instala el módulo y en los
+# siguientes simplemente lo detecta como ya instalado.
+CMD ["odoo", "-c", "/etc/odoo/odoo.conf", "-i", "trebol4devop_ecommerce", "-u", "trebol4devop_ecommerce", "--without-demo=all"]
