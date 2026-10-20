@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_web" model="ir.ui.view">
+        <field name="name">sale.order.form.web</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <group string="Canal E-commerce"
+                       attrs="{'invisible': ['&amp;', ('x_ecommerce', '=', False), ('x_quote_request', '=', False)]}">
+                    <field name="x_ecommerce" readonly="1"/>
+                    <field name="x_quote_request" readonly="1"/>
+                    <field name="x_wix_order_number" readonly="1"/>
+                    <field name="x_wix_order_id" readonly="1"/>
+                    <field name="x_channel" readonly="1"/>
+                    <field name="x_web_stage"/>
+                    <field name="client_order_ref" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_order_tree_web" model="ir.ui.view">
+        <field name="name">sale.order.tree.web</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="x_ecommerce" optional="hide"/>
+                <field name="x_web_stage" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
