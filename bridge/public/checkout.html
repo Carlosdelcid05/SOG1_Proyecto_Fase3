@@ -23,7 +23,7 @@
       }
       * { box-sizing: border-box; }
       [hidden] { display: none !important; }
-      html, body { margin: 0; padding: 0; }
+      html, body { margin: 0; padding: 0; overflow-x: hidden; }
       body {
         background:
           radial-gradient(1200px 600px at 10% -10%, #e7f0e9 0%, transparent 55%),
@@ -72,6 +72,11 @@
       }
       .brand-name { font-weight: 800; letter-spacing: .3px; font-size: 18px; }
       .brand-sub { color: #cfe1dc; font-size: 12px; }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
       .secure-pill {
         display: inline-flex;
         align-items: center;
@@ -84,6 +89,23 @@
         font-size: 12px;
         font-weight: 600;
         white-space: nowrap;
+      }
+      .header-wa-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #25d366;
+        color: #fff;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 12px;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      }
+      .header-wa-btn:hover {
+        background: #20bd5a;
+        color: #fff;
       }
       .hero { padding: 30px 0 10px; }
       .eyebrow {
@@ -99,10 +121,11 @@
       .lede { color: var(--muted); margin: 0; max-width: 70ch; }
       .grid {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr);
-        gap: 22px;
+        grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
+        gap: 24px;
         align-items: start;
         padding: 24px 0 40px;
+        min-width: 0;
       }
       .card {
         background: var(--card);
@@ -110,6 +133,8 @@
         border-radius: var(--radius);
         box-shadow: var(--shadow);
         padding: 24px;
+        min-width: 0;
+        overflow-wrap: break-word;
       }
       .card h2 { margin: 0 0 4px; font-size: 20px; }
       .card .hint { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
@@ -117,6 +142,54 @@
       .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
       .catalog-head h2 { margin: 0; font-size: 24px; }
       .catalog-head p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+      /* Filtros del catálogo */
+      .catalog-filters {
+        background: var(--card);
+        border: 1px solid rgba(11, 61, 59, .08);
+        border-radius: var(--radius);
+        padding: 18px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 24px rgba(12, 45, 43, .05);
+        display: grid;
+        gap: 14px;
+      }
+      .filter-search-box input {
+        font-size: 15px;
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+      .filter-row {
+        display: grid;
+        grid-template-columns: minmax(160px, 1.2fr) minmax(100px, 0.8fr) minmax(100px, 0.8fr) minmax(160px, 1.2fr) auto;
+        gap: 12px;
+        align-items: end;
+      }
+      .filter-group {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+      }
+      .filter-group label {
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--green);
+      }
+      .filter-actions {
+        display: flex;
+        align-items: flex-end;
+      }
+      .filter-status-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 4px;
+        font-size: 13px;
+        color: var(--muted);
+        flex-wrap: wrap;
+      }
+
       .catalog-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -130,18 +203,39 @@
         box-shadow: 0 10px 26px rgba(12, 45, 43, .07);
         display: flex;
         flex-direction: column;
+        min-width: 0;
       }
       .product-card .thumb {
         width: 100%;
-        height: 132px;
+        height: 140px;
         border-radius: 0;
         font-size: 26px;
       }
-      .product-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-      .product-body h3 { font-size: 15px; margin: 0; line-height: 1.25; }
+      .product-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; }
+      .product-body h3 { font-size: 15px; margin: 0; line-height: 1.25; overflow-wrap: break-word; }
       .product-body .item-meta { margin: 0; }
-      .product-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; }
-      .product-price { color: var(--green); font-weight: 900; }
+      .product-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: auto;
+        padding-top: 8px;
+        border-top: 1px solid var(--line);
+        flex-wrap: wrap;
+      }
+      .product-foot-price {
+        display: flex;
+        flex-direction: column;
+      }
+      .product-price { color: var(--green); font-weight: 900; font-size: 16px; }
+      .tax-tag { font-size: 11px; color: var(--muted); font-weight: 600; }
+      .product-foot-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto;
+      }
       .btn-add {
         border: 1px solid var(--green);
         background: #fff;
@@ -152,10 +246,29 @@
         font-size: 13px;
         font-weight: 800;
         cursor: pointer;
+        transition: all .15s ease;
       }
       .btn-add:hover { background: var(--green); color: #fff; }
+      .btn-detail {
+        font-size: 13px;
+        font-weight: 700;
+        padding: 6px 4px;
+        color: var(--green-2);
+        background: none;
+        border: 0;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .btn-detail:hover { color: var(--green); }
+      .stock-tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .stock-tag.in-stock { color: var(--success); }
+
       .catalog-toggle { margin-left: auto; }
-      .items { display: grid; gap: 14px; }
+      .items { display: grid; gap: 14px; min-width: 0; }
       .item {
         display: grid;
         grid-template-columns: 74px minmax(0, 1fr) auto;
@@ -165,6 +278,7 @@
         border: 1px solid var(--line);
         border-radius: 14px;
         background: #fcfdfb;
+        min-width: 0;
       }
       .thumb {
         width: 74px;
@@ -177,12 +291,30 @@
         color: var(--green);
         font-weight: 900;
         font-size: 20px;
+        flex-shrink: 0;
       }
       .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-      .item-name { font-weight: 700; margin: 0 0 3px; }
-      .item-meta { color: var(--muted); font-size: 12px; }
-      .item-price { font-weight: 800; color: var(--green); white-space: nowrap; }
-      .qty-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+      .item-name {
+        font-weight: 700;
+        margin: 0 0 3px;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        min-width: 0;
+      }
+      .item-meta {
+        color: var(--muted);
+        font-size: 12px;
+        overflow-wrap: break-word;
+        min-width: 0;
+      }
+      .item-price {
+        font-weight: 800;
+        color: var(--green);
+        white-space: nowrap;
+        text-align: right;
+        min-width: 0;
+      }
+      .qty-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
       .qty-btn {
         width: 30px; height: 30px;
         border-radius: 9px;
@@ -207,17 +339,43 @@
         border: 0; background: none; color: var(--green-2);
         font-weight: 700; cursor: pointer; text-decoration: none; font-size: 14px;
       }
-      .summary-card { position: sticky; top: 18px; }
-      .summary-lines { display: grid; gap: 10px; margin: 18px 0; }
-      .summary-line { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 14px; }
-      .summary-line strong { color: var(--ink); }
+
+      /* Panel de Resumen sticky y scrolleable */
+      .summary-card {
+        position: sticky;
+        top: 18px;
+        max-height: calc(100vh - 36px);
+        overflow-y: auto;
+        min-width: 0;
+        overscroll-behavior: contain;
+      }
+      .summary-card::-webkit-scrollbar {
+        width: 6px;
+      }
+      .summary-card::-webkit-scrollbar-thumb {
+        background: var(--line);
+        border-radius: 999px;
+      }
+      .summary-lines { display: grid; gap: 10px; margin: 18px 0; min-width: 0; }
+      .summary-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 14px;
+        min-width: 0;
+      }
+      .summary-line strong { color: var(--ink); white-space: nowrap; }
       .summary-total {
         display: flex; justify-content: space-between; gap: 12px;
         padding-top: 14px; border-top: 1px dashed var(--line);
         font-size: 20px; font-weight: 900; color: var(--green);
+        min-width: 0;
       }
+      .summary-total span:last-child { white-space: nowrap; }
+
       .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
-      .field { display: grid; gap: 6px; }
+      .field { display: grid; gap: 6px; min-width: 0; }
       .field.full { grid-column: 1 / -1; }
       label { font-size: 12px; font-weight: 800; color: var(--green); }
       input, select, textarea {
@@ -230,13 +388,14 @@
         background: #fcfdfb;
         color: var(--ink);
         outline: none;
+        box-sizing: border-box;
       }
       input:focus, select:focus, textarea:focus {
         border-color: var(--green-2);
         box-shadow: 0 0 0 3px rgba(20, 90, 85, .12);
       }
       textarea { min-height: 74px; resize: vertical; }
-      .payment-options { display: grid; gap: 10px; margin-top: 18px; }
+      .payment-options { display: grid; gap: 10px; margin-top: 18px; min-width: 0; }
       .payment-option {
         display: grid;
         grid-template-columns: 20px minmax(0, 1fr);
@@ -247,6 +406,7 @@
         padding: 12px;
         cursor: pointer;
         background: #fcfdfb;
+        min-width: 0;
       }
       .payment-option:has(input:checked) {
         border-color: var(--green-2);
@@ -254,8 +414,8 @@
         box-shadow: 0 0 0 2px rgba(20, 90, 85, .08);
       }
       .payment-option input { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--green-2); }
-      .payment-title { font-weight: 800; font-size: 14px; }
-      .payment-note { color: var(--muted); font-size: 12px; margin-top: 2px; }
+      .payment-title { font-weight: 800; font-size: 14px; overflow-wrap: break-word; }
+      .payment-note { color: var(--muted); font-size: 12px; margin-top: 2px; overflow-wrap: break-word; }
       .btn {
         display: inline-flex;
         align-items: center;
@@ -268,6 +428,7 @@
         font-weight: 800;
         cursor: pointer;
         text-decoration: none;
+        box-sizing: border-box;
       }
       .btn-primary {
         width: 100%;
@@ -278,6 +439,7 @@
       }
       .btn-primary:disabled { opacity: .65; cursor: wait; }
       .btn-ghost { background: #eef4f0; color: var(--green); }
+      .btn-ghost:hover { background: #e2ede6; }
       .notice {
         border-radius: 12px;
         padding: 12px 14px;
@@ -324,16 +486,224 @@
         display: inline-block; background: #eef4f0; color: var(--green);
         border-radius: 999px; padding: 4px 10px; font-size: 12px; font-weight: 800;
       }
-      footer { color: var(--muted); font-size: 12px; text-align: center; padding: 24px 0 40px; }
+      .badge.gold { background: #fff5e3; color: #7b5a1a; }
+      .badge.success { background: #e7f6ee; color: var(--success); }
+
+      /* Modales accesibles */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(11, 45, 43, 0.65);
+        backdrop-filter: blur(4px);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        overflow-y: auto;
+      }
+      .modal-backdrop[hidden] { display: none !important; }
+      .modal-card {
+        background: var(--card);
+        border-radius: 20px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+        max-width: 620px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        padding: 28px;
+        animation: modalIn 0.2s ease-out;
+        box-sizing: border-box;
+      }
+      @keyframes modalIn {
+        from { opacity: 0; transform: translateY(12px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 18px;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid var(--line);
+        background: #f7f9f8;
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 800;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+        z-index: 2;
+        transition: background .15s;
+      }
+      .modal-close:hover { background: #e5ece8; }
+
+      .modal-product-layout { display: grid; gap: 18px; }
+      .modal-thumb {
+        width: 100%;
+        height: 220px;
+        border-radius: 14px;
+        background: linear-gradient(145deg, #e5efe9, #f7efe0);
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        font-size: 40px;
+        font-weight: 900;
+        color: var(--green);
+      }
+      .modal-thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .modal-meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .modal-price-box {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        padding: 8px 0;
+      }
+      .modal-price-value { font-size: 24px; font-weight: 900; color: var(--green); }
+      .modal-desc-box {
+        background: #fbfdfc;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #334443;
+      }
+      .modal-desc-box p { margin: 0 0 10px; }
+      .modal-desc-box p:last-child { margin-bottom: 0; }
+      .modal-desc-box ul, .modal-desc-box ol { margin: 0 0 10px 20px; padding: 0; }
+
+      /* Vista previa de factura */
+      .invoice-preview-wrap { display: grid; gap: 16px; }
+      .invoice-preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--line);
+      }
+      .invoice-badge {
+        background: #fef3d6;
+        color: #8c6218;
+        border: 1px solid #ebd090;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: .08em;
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+      .invoice-meta-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        background: #fbfdfc;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        font-size: 13px;
+      }
+      .invoice-items-table-wrap { overflow-x: auto; margin-top: 4px; }
+      .invoice-items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+      }
+      .invoice-items-table th, .invoice-items-table td {
+        padding: 8px 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      .invoice-items-table th {
+        background: #f4f8f6;
+        color: var(--green);
+        font-weight: 800;
+        text-align: left;
+      }
+      .invoice-totals {
+        display: grid;
+        gap: 6px;
+        padding-top: 10px;
+        border-top: 1px dashed var(--line);
+      }
+      .invoice-totals-line {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .invoice-totals-line strong { color: var(--ink); }
+      .invoice-total-highlight {
+        font-size: 18px;
+        font-weight: 900;
+        color: var(--green);
+        padding-top: 6px;
+        border-top: 1px solid var(--line);
+      }
+      .invoice-preview-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 12px;
+        flex-wrap: wrap;
+      }
+
+      /* Botón flotante WhatsApp */
+      .floating-whatsapp {
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        background: #25d366;
+        color: #fff;
+        border-radius: 999px;
+        padding: 12px 18px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 14px;
+        text-decoration: none;
+        box-shadow: 0 10px 30px rgba(37, 211, 102, .4);
+        z-index: 900;
+        transition: transform .15s ease, box-shadow .15s ease;
+      }
+      .floating-whatsapp:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 34px rgba(37, 211, 102, .5);
+        color: #fff;
+      }
+
+      footer {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+        padding: 24px 0 40px;
+      }
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        margin-top: 8px;
+        flex-wrap: wrap;
+      }
+
       @media (max-width: 900px) {
         .grid { grid-template-columns: 1fr; }
-        .summary-card { position: static; }
+        .summary-card { position: static; max-height: none; overflow-y: visible; }
+        .filter-row { grid-template-columns: 1fr 1fr; }
       }
       @media (max-width: 560px) {
+        .shell { width: calc(100% - 24px); }
         .form-grid { grid-template-columns: 1fr; }
         .item { grid-template-columns: 58px minmax(0, 1fr); }
         .thumb { width: 58px; height: 58px; }
-        .item-price { grid-column: 2; }
+        .item-price { grid-column: 1 / -1; text-align: left; }
+        .filter-row { grid-template-columns: 1fr; }
+        .invoice-meta-grid { grid-template-columns: 1fr; }
+        .floating-whatsapp .whatsapp-label { display: none; }
+        .floating-whatsapp { padding: 14px; border-radius: 50%; bottom: 16px; right: 16px; }
       }
     </style>
   </head>
@@ -347,7 +717,19 @@
             <span class="brand-sub">Soluciones digitales · Guatemala</span>
           </span>
         </a>
-        <span class="secure-pill">🔒 Checkout seguro · Facturación en Odoo</span>
+        <div class="header-actions">
+          <span class="secure-pill">🔒 Checkout seguro · Facturación en Odoo</span>
+          <a
+            class="header-wa-btn"
+            id="header-wa-btn"
+            href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20tengo%20una%20consulta%20sobre%20mi%20compra."
+            target="_blank"
+            rel="noopener"
+            aria-label="Soporte y ventas por WhatsApp"
+          >
+            <span>WhatsApp</span>
+          </a>
+        </div>
       </div>
     </header>
 
@@ -370,7 +752,71 @@
           </div>
           <button id="catalog-search-clear" class="linkish" type="button" hidden>Ver todos</button>
         </div>
+
+        <!-- Filtros y búsqueda del catálogo -->
+        <div class="catalog-filters" id="catalog-filters">
+          <div class="filter-search-box">
+            <input
+              id="catalog-search"
+              type="search"
+              placeholder="Buscar por nombre, SKU o categoría…"
+              aria-label="Buscar productos"
+            />
+          </div>
+          <div class="filter-row">
+            <div class="filter-group">
+              <label for="catalog-category">Categoría</label>
+              <select id="catalog-category" aria-label="Filtrar por categoría">
+                <option value="">Todas las categorías</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="catalog-min-price">Precio mín.</label>
+              <input
+                id="catalog-min-price"
+                type="number"
+                min="0"
+                step="any"
+                placeholder="Q Mín"
+                aria-label="Precio mínimo"
+              />
+            </div>
+            <div class="filter-group">
+              <label for="catalog-max-price">Precio máx.</label>
+              <input
+                id="catalog-max-price"
+                type="number"
+                min="0"
+                step="any"
+                placeholder="Q Máx"
+                aria-label="Precio máximo"
+              />
+            </div>
+            <div class="filter-group">
+              <label for="catalog-sort">Ordenar por</label>
+              <select id="catalog-sort" aria-label="Ordenar productos">
+                <option value="default">Por defecto (SKU)</option>
+                <option value="name-asc">Nombre (A → Z)</option>
+                <option value="name-desc">Nombre (Z → A)</option>
+                <option value="price-asc">Precio (menor a mayor)</option>
+                <option value="price-desc">Precio (mayor a menor)</option>
+              </select>
+            </div>
+            <div class="filter-actions">
+              <button id="catalog-clear-filters" class="btn btn-ghost" type="button">Limpiar filtros</button>
+            </div>
+          </div>
+          <div class="filter-status-bar">
+            <span id="catalog-count-badge" class="badge">Cargando catálogo…</span>
+            <span class="tax-tag">Precios en GTQ con IVA 12% incluido</span>
+          </div>
+        </div>
+
         <div id="catalog-grid" class="catalog-grid"></div>
+        <div id="catalog-empty-msg" class="empty" hidden>
+          <p>No se encontraron productos con los filtros seleccionados.</p>
+          <button id="catalog-reset-btn" class="btn btn-ghost" type="button">Ver todos los productos</button>
+        </div>
       </section>
 
       <section id="loading" class="loading">
@@ -425,8 +871,8 @@
                 <input id="company" name="company" autocomplete="organization" maxlength="160" placeholder="Mi empresa S.A." />
               </div>
               <div class="field">
-                <label for="vat">NIT (opcional)</label>
-                <input id="vat" name="vat" maxlength="40" placeholder="1234567-8" />
+                <label for="vat">NIT (opcional, deja vacío para CF)</label>
+                <input id="vat" name="vat" maxlength="40" placeholder="1234567-8 o CF" />
               </div>
               <div class="field full">
                 <label for="street">Dirección (opcional)</label>
@@ -453,12 +899,23 @@
                   <span class="payment-note" id="bank-note">El pedido queda facturado y pendiente de pago.</span>
                 </span>
               </label>
+              <label class="payment-option" id="option-contra-entrega">
+                <input type="radio" name="paymentMethod" value="contra_entrega" />
+                <span>
+                  <span class="payment-title">Contra entrega</span>
+                  <span class="payment-note">Contra entrega: el pedido se factura ahora y el pago se realiza al recibir el servicio/entrega.</span>
+                </span>
+              </label>
             </div>
 
             <div class="field" style="margin-top: 14px">
               <label for="notes">Notas para el pedido (opcional)</label>
               <textarea id="notes" name="notes" maxlength="2000" placeholder="Horario de contacto, referencias, etc."></textarea>
             </div>
+
+            <button id="btn-preview-invoice" class="btn btn-ghost" type="button" style="width:100%;margin-top:14px">
+              📄 Ver vista previa de factura
+            </button>
 
             <div id="error" class="error" role="alert"></div>
             <button id="submit" class="btn btn-primary" type="submit">Confirmar pedido</button>
@@ -477,9 +934,11 @@
         <div class="order-box">
           <div class="order-row"><span>Pedido</span><strong id="success-order">—</strong></div>
           <div class="order-row"><span>Estado</span><span class="badge" id="success-stage">—</span></div>
+          <div class="order-row" id="success-subtotal-row"><span>Subtotal (sin IVA)</span><strong id="success-subtotal">—</strong></div>
+          <div class="order-row" id="success-tax-row"><span>IVA 12%</span><strong id="success-tax">—</strong></div>
           <div class="order-row"><span>Total</span><strong id="success-total">—</strong></div>
           <div class="order-row"><span>Pago</span><strong id="success-payment">—</strong></div>
-          <div class="order-row" id="success-invoice-row" hidden><span>Factura</span><strong id="success-invoice">—</strong></div>
+          <div class="order-row" id="success-invoice-row" hidden><span>Factura electrónica</span><strong id="success-invoice">—</strong></div>
         </div>
         <div class="pdf-links" id="pdf-links"></div>
         <p class="hint" style="margin-top: 20px">
@@ -489,8 +948,97 @@
       </section>
     </main>
 
+    <!-- Modal accesible: Detalle de producto -->
+    <div id="product-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="modal-product-title">
+      <div class="modal-card">
+        <button id="product-modal-close" class="modal-close" type="button" aria-label="Cerrar detalle">✕</button>
+        <div id="product-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Modal accesible: Vista previa de factura -->
+    <div id="invoice-preview-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="invoice-modal-title">
+      <div class="modal-card">
+        <button id="invoice-modal-close" class="modal-close" type="button" aria-label="Cerrar vista previa">✕</button>
+        <div class="invoice-preview-wrap">
+          <div class="invoice-preview-header">
+            <div>
+              <span class="eyebrow">Facturación Odoo</span>
+              <h2 id="invoice-modal-title" style="margin:0 0 4px">Vista previa de factura</h2>
+              <p class="hint" style="margin:0">Simulación del documento tributario antes de emitir tu pedido.</p>
+            </div>
+            <span class="invoice-badge">VISTA PREVIA</span>
+          </div>
+
+          <div class="invoice-meta-grid">
+            <div>
+              <strong>Emisor:</strong> Trebol4Devop S.A.<br />
+              <span class="hint">NIT: 10293847-5 · Guatemala</span>
+            </div>
+            <div id="invoice-preview-client"></div>
+          </div>
+
+          <div class="invoice-items-table-wrap">
+            <table class="invoice-items-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Descripción</th>
+                  <th style="text-align:center">Cant.</th>
+                  <th style="text-align:right">Precio unit.</th>
+                  <th style="text-align:right">Total</th>
+                </tr>
+              </thead>
+              <tbody id="invoice-preview-lines"></tbody>
+            </table>
+          </div>
+
+          <div class="invoice-totals">
+            <div class="invoice-totals-line">
+              <span>Subtotal sin IVA:</span>
+              <strong id="invoice-preview-subtotal">Q 0.00</strong>
+            </div>
+            <div class="invoice-totals-line">
+              <span>IVA 12% (incluido):</span>
+              <strong id="invoice-preview-tax">Q 0.00</strong>
+            </div>
+            <div class="invoice-totals-line invoice-total-highlight">
+              <span>Total GTQ:</span>
+              <strong id="invoice-preview-total">Q 0.00</strong>
+            </div>
+          </div>
+
+          <div class="invoice-preview-actions">
+            <button id="invoice-preview-close-btn" class="btn btn-ghost" type="button">Volver al checkout</button>
+            <button id="invoice-preview-confirm-btn" class="btn btn-primary" type="button" style="width:auto;margin-top:0">Confirmar pedido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a
+      id="floating-whatsapp"
+      class="floating-whatsapp"
+      href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20tengo%20una%20consulta%20sobre%20el%20cat%C3%A1logo%20y%20los%20servicios."
+      target="_blank"
+      rel="noopener"
+      aria-label="Contactar por WhatsApp para soporte"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      <span class="whatsapp-label">WhatsApp</span>
+    </a>
+
     <footer>
       Trebol4Devop · Precios en GTQ · IVA 12% incluido · Facturación electrónica en Odoo
+      <div class="footer-links">
+        <a id="footer-wa-link" href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20tengo%20una%20consulta%20de%20soporte." target="_blank" rel="noopener">
+          Atención por WhatsApp: +502 2300-0000
+        </a>
+        · <a href="/agendar-cita">Agendar cita técnica</a>
+      </div>
     </footer>
 
     <script>
@@ -508,6 +1056,13 @@
           cart: [],
           checkoutId: "",
           submitting: false,
+          filters: {
+            query: "",
+            category: "",
+            minPrice: null,
+            maxPrice: null,
+            sort: "default",
+          },
         };
 
         const $ = (id) => document.getElementById(id);
@@ -526,6 +1081,74 @@
             '"': "&quot;",
             "'": "&#39;",
           })[char]);
+
+        /**
+         * Sanitizador seguro de HTML para descripciones de productos.
+         * Solo permite <p>, <ul>, <ol>, <li>, <strong>, <b>, <em>, <i>, <br>, <span>
+         * y elimina atributos maliciosos (event handlers, javascript:, etc.).
+         */
+        function sanitizeDescription(rawHtml) {
+          if (!rawHtml || !String(rawHtml).trim()) {
+            return '<p class="hint">Sin descripción detallada.</p>';
+          }
+          try {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(String(rawHtml), "text/html");
+            const allowedTags = new Set([
+              "P", "UL", "OL", "LI", "STRONG", "B", "EM", "I", "BR", "SPAN",
+            ]);
+
+            function clean(node) {
+              const children = Array.from(node.childNodes);
+              for (const child of children) {
+                if (child.nodeType === Node.ELEMENT_NODE) {
+                  if (!allowedTags.has(child.tagName)) {
+                    const textNode = document.createTextNode(child.textContent || "");
+                    node.replaceChild(textNode, child);
+                  } else {
+                    while (child.attributes.length > 0) {
+                      child.removeAttribute(child.attributes[0].name);
+                    }
+                    clean(child);
+                  }
+                } else if (child.nodeType !== Node.TEXT_NODE) {
+                  node.removeChild(child);
+                }
+              }
+            }
+            clean(doc.body);
+            const cleanHtml = doc.body.innerHTML.trim();
+            return cleanHtml || '<p class="hint">Sin descripción detallada.</p>';
+          } catch (e) {
+            return `<p>${escapeHtml(rawHtml)}</p>`;
+          }
+        }
+
+        function buildWhatsAppUrl(numberRaw, text) {
+          const digits = String(numberRaw || "").replace(/\D/g, "") || "50223000000";
+          return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+        }
+
+        function updateWhatsAppLinks(context, extraData = {}) {
+          const number = state.config?.contact?.whatsapp || "+502 2300-0000";
+          let message = "Hola Trebol4Devop, tengo una consulta sobre el catálogo y los servicios.";
+          if (context === "order" && extraData.orderName) {
+            message = `Hola Trebol4Devop, consulto por mi pedido ${extraData.orderName} realizado en el checkout.`;
+          } else if (context === "support") {
+            message = "Hola Trebol4Devop, necesito soporte con mi pedido.";
+          }
+
+          const url = buildWhatsAppUrl(number, message);
+          const floating = $("floating-whatsapp");
+          if (floating) floating.href = url;
+          const headerWa = $("header-wa-btn");
+          if (headerWa) headerWa.href = url;
+          const footerWa = $("footer-wa-link");
+          if (footerWa) {
+            footerWa.href = url;
+            footerWa.textContent = `Atención por WhatsApp: ${number}`;
+          }
+        }
 
         function backUrl() {
           const params = new URLSearchParams(location.search);
@@ -654,14 +1277,105 @@
           }, 0);
         }
 
-        function renderCatalog(products = Array.from(state.products.values())) {
+        function populateCategoryFilter() {
+          const select = $("catalog-category");
+          if (!select) return;
+          const categories = new Set();
+          state.products.forEach((p) => {
+            if (p.category) categories.add(p.category);
+          });
+          const sorted = Array.from(categories).sort((a, b) => a.localeCompare(b, "es"));
+          const current = select.value;
+          select.innerHTML = '<option value="">Todas las categorías</option>' +
+            sorted.map((c) => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+          if (current && categories.has(current)) select.value = current;
+        }
+
+        function getFilteredProducts() {
+          const list = Array.from(state.products.values());
+          const q = state.filters.query.toLowerCase().trim();
+          const cat = state.filters.category;
+          const min = state.filters.minPrice;
+          const max = state.filters.maxPrice;
+
+          const filtered = list.filter((p) => {
+            if (q) {
+              const inName = p.name.toLowerCase().includes(q);
+              const inSku = p.sku.toLowerCase().includes(q);
+              const inCat = (p.category || "").toLowerCase().includes(q);
+              if (!inName && !inSku && !inCat) return false;
+            }
+            if (cat && p.category !== cat) return false;
+            if (min !== null && !Number.isNaN(min) && p.price < min) return false;
+            if (max !== null && !Number.isNaN(max) && p.price > max) return false;
+            return true;
+          });
+
+          switch (state.filters.sort) {
+            case "name-asc":
+              filtered.sort((a, b) => a.name.localeCompare(b.name, "es"));
+              break;
+            case "name-desc":
+              filtered.sort((a, b) => b.name.localeCompare(a.name, "es"));
+              break;
+            case "price-asc":
+              filtered.sort((a, b) => a.price - b.price);
+              break;
+            case "price-desc":
+              filtered.sort((a, b) => b.price - a.price);
+              break;
+            default:
+              filtered.sort((a, b) => a.sku.localeCompare(b.sku, "es"));
+              break;
+          }
+
+          return filtered;
+        }
+
+        function renderCatalog() {
           const grid = $("catalog-grid");
+          const emptyMsg = $("catalog-empty-msg");
+          const badge = $("catalog-count-badge");
+          const clearBtn = $("catalog-search-clear");
           if (!grid) return;
+
+          const filtered = getFilteredProducts();
+          const total = state.products.size;
+
+          if (badge) {
+            badge.textContent = filtered.length === total
+              ? `Mostrando ${total} producto(s)`
+              : `Mostrando ${filtered.length} de ${total} producto(s)`;
+          }
+
+          const hasActiveFilters = Boolean(
+            state.filters.query ||
+            state.filters.category ||
+            state.filters.minPrice !== null ||
+            state.filters.maxPrice !== null ||
+            state.filters.sort !== "default"
+          );
+          if (clearBtn) clearBtn.hidden = !hasActiveFilters;
+
+          if (!filtered.length) {
+            grid.innerHTML = "";
+            grid.hidden = true;
+            if (emptyMsg) emptyMsg.hidden = false;
+            return;
+          }
+
+          if (emptyMsg) emptyMsg.hidden = true;
+          grid.hidden = false;
           grid.innerHTML = "";
 
-          products.forEach((product) => {
+          filtered.forEach((product) => {
             const card = document.createElement("article");
             card.className = "product-card";
+            const inStock = product.stock > 0;
+            const stockLabel = inStock
+              ? `${product.stock} en stock`
+              : "Disponible bajo pedido";
+
             card.innerHTML = `
               <div class="thumb">${
                 product.image
@@ -673,15 +1387,162 @@
               <div class="product-body">
                 <div class="item-meta">${escapeHtml(product.category || "Servicios")}</div>
                 <h3>${escapeHtml(product.name)}</h3>
-                <div class="item-meta">SKU ${escapeHtml(product.sku)}</div>
+                <div class="item-meta">SKU ${escapeHtml(product.sku)} · <span class="stock-tag ${inStock ? 'in-stock' : ''}">${escapeHtml(stockLabel)}</span></div>
                 <div class="product-foot">
-                  <span class="product-price">${money(product.price)}</span>
-                  <button class="btn-add" type="button" data-sku="${escapeHtml(product.sku)}">Agregar</button>
+                  <div class="product-foot-price">
+                    <span class="product-price">${money(product.price)}</span>
+                    <span class="tax-tag">IVA incl.</span>
+                  </div>
+                  <div class="product-foot-actions">
+                    <button class="btn-detail" type="button" data-detail-sku="${escapeHtml(product.sku)}" aria-label="Ver detalle de ${escapeHtml(product.name)}">Ver detalle</button>
+                    <button class="btn-add" type="button" data-sku="${escapeHtml(product.sku)}">Agregar</button>
+                  </div>
                 </div>
               </div>
             `;
             grid.appendChild(card);
           });
+        }
+
+        function resetCatalogFilters() {
+          state.filters.query = "";
+          state.filters.category = "";
+          state.filters.minPrice = null;
+          state.filters.maxPrice = null;
+          state.filters.sort = "default";
+
+          if ($("catalog-search")) $("catalog-search").value = "";
+          if ($("catalog-category")) $("catalog-category").value = "";
+          if ($("catalog-min-price")) $("catalog-min-price").value = "";
+          if ($("catalog-max-price")) $("catalog-max-price").value = "";
+          if ($("catalog-sort")) $("catalog-sort").value = "default";
+
+          renderCatalog();
+        }
+
+        function openProductModal(sku) {
+          const product = state.products.get(sku);
+          if (!product) return;
+
+          const modal = $("product-modal");
+          const body = $("product-modal-body");
+          if (!modal || !body) return;
+
+          const inStock = product.stock > 0;
+          const stockText = inStock
+            ? `${product.stock} unidades disponibles en Odoo`
+            : "Disponible para entrega bajo pedido";
+
+          body.innerHTML = `
+            <div class="modal-product-layout">
+              <div class="modal-thumb">
+                ${
+                  product.image
+                    ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" onerror="this.parentElement.textContent='${escapeHtml(product.sku.slice(0, 3))}'" />`
+                    : escapeHtml(product.sku.slice(0, 3))
+                }
+              </div>
+              <div>
+                <div class="modal-meta-row">
+                  <span class="badge">${escapeHtml(product.category || "Servicios")}</span>
+                  <span class="badge ${inStock ? 'success' : 'gold'}">${escapeHtml(stockText)}</span>
+                </div>
+                <h2 id="modal-product-title" style="margin:8px 0 4px;font-size:22px">${escapeHtml(product.name)}</h2>
+                <div class="item-meta">SKU: <strong>${escapeHtml(product.sku)}</strong></div>
+                <div class="modal-price-box">
+                  <span class="modal-price-value">${money(product.price)}</span>
+                  <span class="tax-tag">GTQ · IVA 12% incluido</span>
+                </div>
+              </div>
+              <div>
+                <label style="display:block;margin-bottom:6px">Descripción del servicio / producto:</label>
+                <div class="modal-desc-box">${sanitizeDescription(product.description)}</div>
+              </div>
+              <button class="btn btn-primary" id="modal-add-btn" type="button" data-sku="${escapeHtml(product.sku)}">
+                Agregar al carrito
+              </button>
+            </div>
+          `;
+
+          modal.hidden = false;
+          document.body.style.overflow = "hidden";
+
+          const closeBtn = $("product-modal-close");
+          if (closeBtn) closeBtn.focus();
+        }
+
+        function closeProductModal() {
+          const modal = $("product-modal");
+          if (!modal) return;
+          modal.hidden = true;
+          document.body.style.overflow = "";
+        }
+
+        function openInvoicePreview() {
+          const form = $("checkout-form");
+          const formData = new FormData(form);
+
+          const clientName = String(formData.get("name") || "").trim() || "Consumidor Final";
+          const clientEmail = String(formData.get("email") || "").trim() || "(Sin correo indicado)";
+          const clientPhone = String(formData.get("phone") || "").trim() || "(Sin teléfono)";
+          const clientCompany = String(formData.get("company") || "").trim();
+          const rawVat = String(formData.get("vat") || "").trim();
+          const clientVat = rawVat ? rawVat : "CF";
+          const clientStreet = String(formData.get("street") || "").trim() || "Ciudad de Guatemala";
+          const clientCity = String(formData.get("city") || "").trim() || "Guatemala";
+
+          const clientDiv = $("invoice-preview-client");
+          if (clientDiv) {
+            clientDiv.innerHTML = `
+              <strong>Cliente:</strong> ${escapeHtml(clientName)}${clientCompany ? ` (${escapeHtml(clientCompany)})` : ""}<br />
+              <strong>NIT:</strong> <span class="badge ${clientVat === 'CF' ? 'gold' : ''}">${escapeHtml(clientVat)}</span><br />
+              <strong>Correo:</strong> ${escapeHtml(clientEmail)} · <strong>Tel:</strong> ${escapeHtml(clientPhone)}<br />
+              <strong>Dirección:</strong> ${escapeHtml(clientStreet)}, ${escapeHtml(clientCity)}
+            `;
+          }
+
+          const tbody = $("invoice-preview-lines");
+          if (tbody) {
+            tbody.innerHTML = "";
+            state.cart.forEach((item) => {
+              const product = state.products.get(item.sku);
+              const name = product ? product.name : `Producto ${item.sku}`;
+              const price = product ? product.price : 0;
+              const lineTotal = price * item.quantity;
+              const tr = document.createElement("tr");
+              tr.innerHTML = `
+                <td><code>${escapeHtml(item.sku)}</code></td>
+                <td>${escapeHtml(name)}</td>
+                <td style="text-align:center">${item.quantity}</td>
+                <td style="text-align:right">${money(price)}</td>
+                <td style="text-align:right"><strong>${money(lineTotal)}</strong></td>
+              `;
+              tbody.appendChild(tr);
+            });
+          }
+
+          const total = cartTotal();
+          const subtotal = total / (1 + TAX_RATE);
+          const tax = total - subtotal;
+
+          if ($("invoice-preview-subtotal")) $("invoice-preview-subtotal").textContent = money(subtotal);
+          if ($("invoice-preview-tax")) $("invoice-preview-tax").textContent = money(tax);
+          if ($("invoice-preview-total")) $("invoice-preview-total").textContent = money(total);
+
+          const modal = $("invoice-preview-modal");
+          if (modal) {
+            modal.hidden = false;
+            document.body.style.overflow = "hidden";
+            const closeBtn = $("invoice-modal-close");
+            if (closeBtn) closeBtn.focus();
+          }
+        }
+
+        function closeInvoicePreview() {
+          const modal = $("invoice-preview-modal");
+          if (!modal) return;
+          modal.hidden = true;
+          document.body.style.overflow = "";
         }
 
         function addProductToCart(sku) {
@@ -793,15 +1654,33 @@
           $("checkout-grid").hidden = true;
           $("empty").hidden = true;
           $("loading").hidden = true;
+          $("catalog").hidden = true;
           $("success").hidden = false;
 
-          $("success-order").textContent = data.orderName || `#${data.orderId}`;
+          const orderName = data.orderName || `#${data.orderId}`;
+          $("success-order").textContent = orderName;
           $("success-stage").textContent = data.stageLabel || data.stage || "Confirmado";
+
+          // Usar directamente los totales devueltos por el backend (fuente de verdad en Odoo)
+          if (data.amountUntaxed !== undefined) {
+            $("success-subtotal").textContent = money(data.amountUntaxed);
+          }
+          if (data.amountTax !== undefined) {
+            $("success-tax").textContent = money(data.amountTax);
+          }
           $("success-total").textContent = money(data.amountTotal);
-          $("success-payment").textContent =
-            data.paymentMethod === "simulated"
-              ? "Pago simulado registrado"
-              : "Transferencia pendiente";
+
+          // Estado del pago y mensaje contextual según el método seleccionado
+          if (data.paymentMethod === "simulated") {
+            $("success-payment").textContent = "Pago simulado registrado";
+            $("success-message").textContent = "Tu pedido quedó registrado y el pago fue confirmado automáticamente en Odoo.";
+          } else if (data.paymentMethod === "contra_entrega") {
+            $("success-payment").textContent = "Pago pendiente contra entrega";
+            $("success-message").textContent = "Tu pedido quedó facturado. El pago se realizará contra entrega del servicio o producto.";
+          } else {
+            $("success-payment").textContent = "Transferencia pendiente";
+            $("success-message").textContent = "Tu pedido quedó facturado. Realiza la transferencia y envía el comprobante para registrar el pago.";
+          }
 
           const invoice = data.invoices && data.invoices[0];
           if (invoice) {
@@ -831,10 +1710,8 @@
           });
           $("pdf-links").innerHTML = links.join("");
 
-          $("success-message").textContent =
-            data.paymentMethod === "simulated"
-              ? "Tu pedido quedó registrado y el pago fue confirmado en Odoo."
-              : "Tu pedido quedó facturado. Realiza la transferencia y envía el comprobante para registrar el pago.";
+          // Actualizar WhatsApp contextual con el número de pedido
+          updateWhatsAppLinks("order", { orderName });
 
           try {
             localStorage.removeItem(CART_KEY);
@@ -848,7 +1725,7 @@
         }
 
         async function submitOrder(event) {
-          event.preventDefault();
+          if (event) event.preventDefault();
           if (state.submitting) return;
           hideError();
 
@@ -859,6 +1736,8 @@
             showError("Tu carrito está vacío.");
             return;
           }
+
+          closeInvoicePreview();
 
           const formData = new FormData(form);
           const paymentMethod = formData.get("paymentMethod") || "simulated";
@@ -912,18 +1791,79 @@
         }
 
         function bindEvents() {
+          // Items del carrito
           $("items").addEventListener("click", (event) => {
             const target = event.target.closest("[data-action]");
             if (!target) return;
             updateCart(target.getAttribute("data-sku"), target.getAttribute("data-action"));
           });
 
+          // Grilla del catálogo: agregar y ver detalle
           $("catalog-grid").addEventListener("click", (event) => {
-            const button = event.target.closest("[data-sku]");
-            if (!button) return;
-            addProductToCart(button.getAttribute("data-sku"));
+            const detailBtn = event.target.closest("[data-detail-sku]");
+            if (detailBtn) {
+              openProductModal(detailBtn.getAttribute("data-detail-sku"));
+              return;
+            }
+            const addBtn = event.target.closest("[data-sku]");
+            if (addBtn) {
+              addProductToCart(addBtn.getAttribute("data-sku"));
+            }
           });
 
+          // Filtros del catálogo
+          const searchInput = $("catalog-search");
+          if (searchInput) {
+            searchInput.addEventListener("input", (e) => {
+              state.filters.query = e.target.value;
+              renderCatalog();
+            });
+          }
+
+          const catSelect = $("catalog-category");
+          if (catSelect) {
+            catSelect.addEventListener("change", (e) => {
+              state.filters.category = e.target.value;
+              renderCatalog();
+            });
+          }
+
+          const minInput = $("catalog-min-price");
+          if (minInput) {
+            minInput.addEventListener("input", (e) => {
+              const val = parseFloat(e.target.value);
+              state.filters.minPrice = Number.isNaN(val) ? null : val;
+              renderCatalog();
+            });
+          }
+
+          const maxInput = $("catalog-max-price");
+          if (maxInput) {
+            maxInput.addEventListener("input", (e) => {
+              const val = parseFloat(e.target.value);
+              state.filters.maxPrice = Number.isNaN(val) ? null : val;
+              renderCatalog();
+            });
+          }
+
+          const sortSelect = $("catalog-sort");
+          if (sortSelect) {
+            sortSelect.addEventListener("change", (e) => {
+              state.filters.sort = e.target.value;
+              renderCatalog();
+            });
+          }
+
+          const clearBtn = $("catalog-search-clear");
+          if (clearBtn) clearBtn.addEventListener("click", resetCatalogFilters);
+
+          const clearFiltersBtn = $("catalog-clear-filters");
+          if (clearFiltersBtn) clearFiltersBtn.addEventListener("click", resetCatalogFilters);
+
+          const resetEmptyBtn = $("catalog-reset-btn");
+          if (resetEmptyBtn) resetEmptyBtn.addEventListener("click", resetCatalogFilters);
+
+          // Botones de acción del carrito
           $("add-more").addEventListener("click", () => {
             renderCatalog();
             $("catalog").hidden = false;
@@ -937,7 +1877,45 @@
             renderCart();
           });
 
+          // Vista previa de factura
+          $("btn-preview-invoice").addEventListener("click", openInvoicePreview);
+          $("invoice-modal-close").addEventListener("click", closeInvoicePreview);
+          $("invoice-preview-close-btn").addEventListener("click", closeInvoicePreview);
+          $("invoice-preview-confirm-btn").addEventListener("click", () => {
+            submitOrder();
+          });
+
+          // Modal de producto
+          $("product-modal-close").addEventListener("click", closeProductModal);
+          $("product-modal-body").addEventListener("click", (e) => {
+            const addBtn = e.target.closest("#modal-add-btn");
+            if (addBtn) {
+              const sku = addBtn.getAttribute("data-sku");
+              addProductToCart(sku);
+              closeProductModal();
+            }
+          });
+
+          // Cierre de modales con clic en backdrop
+          $("product-modal").addEventListener("click", (e) => {
+            if (e.target === $("product-modal")) closeProductModal();
+          });
+          $("invoice-preview-modal").addEventListener("click", (e) => {
+            if (e.target === $("invoice-preview-modal")) closeInvoicePreview();
+          });
+
+          // Cierre de modales con tecla Escape
+          window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              if (!$("product-modal").hidden) closeProductModal();
+              if (!$("invoice-preview-modal").hidden) closeInvoicePreview();
+            }
+          });
+
+          // Formulario de checkout
           $("checkout-form").addEventListener("submit", submitOrder);
+
+          // Sincronización entre pestañas
           window.addEventListener("storage", (event) => {
             if (event.key === CART_KEY && event.newValue) {
               state.cart = normalizeCart(readStoredCart());
@@ -966,7 +1944,10 @@
             state.products = new Map(
               productsResponse.data.map((product) => [product.sku, product]),
             );
+
+            populateCategoryFilter();
             renderCatalog();
+            updateWhatsAppLinks("catalog");
 
             const urlItems = itemsFromUrl();
             state.cart = normalizeCart(

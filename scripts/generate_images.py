@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import html
+import json
 import subprocess
 from pathlib import Path
 
@@ -163,6 +164,30 @@ def build_svg(code: str, name: str, category: str, price: int) -> str:
 """
 
 
+def build_plain_description(code: str, name: str, category: str, details: dict) -> str:
+    """Genera la descripción enriquecida en HTML para el catálogo Wix y Odoo."""
+    item = details.get(code)
+    if not item:
+        return (
+            f"<p>{html.escape(name)}. Servicio profesional de Trebol4Devop en la "
+            f"categoría {html.escape(category)}. Incluye acompañamiento, "
+            "documentación y soporte.</p>"
+        )
+
+    summary = html.escape(item.get("summary", ""))
+    features = "".join(f"<li>{html.escape(f)}</li>" for f in item.get("features", []))
+    delivery = html.escape(item.get("delivery", ""))
+    ideal_for = html.escape(item.get("idealFor", ""))
+
+    return (
+        f"<p>{summary}</p>"
+        f"<p><strong>Características principales:</strong></p>"
+        f"<ul>{features}</ul>"
+        f"<p><strong>Tiempo de entrega:</strong> {delivery}</p>"
+        f"<p><strong>Ideal para:</strong> {ideal_for}</p>"
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -170,34 +195,56 @@ def main() -> None:
         default="",
         help="URL pública del bridge para productImageUrl (ej. https://abc.trycloudflare.com)",
     )
+    parser.add_argument(
+        "--csv-only",
+        action="store_true",
+        help="Regenera únicamente el CSV de Wix sin generar imágenes SVG/PNG/WEBP",
+    )
     args = parser.parse_args()
 
-    for code, name, category, price in PRODUCTS:
-        svg = build_svg(code, name, category, price)
-        svg_path = OUT / f"{code}.svg"
-        png_path = OUT / f"{code}.png"
-        webp_path = OUT / f"{code}.webp"
-        svg_path.write_text(svg, encoding="utf-8")
+    if not args.csv_only:
+        for code, name, category, price in PRODUCTS:
+            svg = build_svg(code, name, category, price)
+            svg_path = OUT / f"{code}.svg"
+            png_path = OUT / f"{code}.png"
+            webp_path = OUT / f"{code}.webp"
+            svg_path.write_text(svg, encoding="utf-8")
 
-        subprocess.run(
-            ["rsvg-convert", "-w", "1200", "-h", "900", "-o", str(png_path), str(svg_path)],
-            check=True,
-        )
-        subprocess.run(
-            ["convert", str(png_path), "-resize", "800x600", "-quality", "82", str(webp_path)],
-            check=True,
-        )
-        svg_path.unlink()
-        print(f"✓ {code} → {png_path.name} / {webp_path.name}")
+            subprocess.run(
+                ["rsvg-convert", "-w", "1200", "-h", "900", "-o", str(png_path), str(svg_path)],
+                check=True,
+            )
+            subprocess.run(
+                ["convert", str(png_path), "-resize", "800x600", "-quality", "82", str(webp_path)],
+                check=True,
+            )
+            svg_path.unlink()
+            print(f"✓ {code} → {png_path.name} / {webp_path.name}")
+        print(f"\n{len(PRODUCTS)} imágenes generadas en {OUT}")
 
     write_wix_csv(args.base_url.rstrip("/"))
-    print(f"\n{len(PRODUCTS)} imágenes generadas en {OUT}")
 
 
 def write_wix_csv(base_url: str) -> None:
     """Genera el CSV con el formato oficial de importación de Wix Stores."""
     target = ROOT / "wix" / "catalog" / "productos_wix.csv"
     target.parent.mkdir(parents=True, exist_ok=True)
+
+    details_file = ROOT / "scripts" / "catalog_details.json"
+    details = {}
+    if details_file.exists():
+        with details_file.open("r", encoding="utf-8") as df:
+            details = json.load(df)
+
+    existing_media = {}
+    if target.exists():
+        try:
+            with target.open("r", encoding="utf-8-sig") as f:
+                for row in csv.DictReader(f):
+                    if row.get("sku") and row.get("media"):
+                        existing_media[row["sku"]] = row["media"]
+        except Exception:
+            pass
 
     # Encabezados exactos de la plantilla oficial de Wix (import 1.773.0).
     headers = [
@@ -252,7 +299,13 @@ def write_wix_csv(base_url: str) -> None:
         writer = csv.DictWriter(csv_file, fieldnames=headers)
         writer.writeheader()
         for code, name, category, price in PRODUCTS:
-            image_url = f"{base_url}/assets/products/{code}.png" if base_url else ""
+            if base_url:
+                image_url = f"{base_url}/assets/products/{code}.png"
+            elif code in existing_media:
+                image_url = existing_media[code]
+            else:
+                image_url = ""
+
             category_slug = slug(category)
             row = {header: "" for header in headers}
             row.update(
@@ -261,11 +314,7 @@ def write_wix_csv(base_url: str) -> None:
                     "fieldType": "PRODUCT",
                     "name": name,
                     "visible": "TRUE",
-                    "plainDescription": (
-                        f"<p>{name}. Servicio profesional de Trebol4Devop en la "
-                        f"categoría {category}. Incluye acompañamiento, "
-                        "documentación y soporte.</p>"
-                    ),
+                    "plainDescription": build_plain_description(code, name, category, details),
                     "categorySlugs": category_slug,
                     "primaryCategorySlug": category_slug,
                     "media": image_url,

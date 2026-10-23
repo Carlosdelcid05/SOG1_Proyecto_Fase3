@@ -386,7 +386,10 @@ export async function simulatePayment(orderId: number, email: string) {
   };
 }
 
-export type CheckoutPaymentMethod = "simulated" | "transfer";
+export type CheckoutPaymentMethod =
+  | "simulated"
+  | "transfer"
+  | "contra_entrega";
 
 export type CheckoutOrderInput = {
   checkoutId: string;
@@ -401,6 +404,7 @@ type CheckoutOrderRow = {
   name: string;
   state: string;
   x_web_stage: string | false;
+  x_payment_method: string | false;
   amount_total: number;
   amount_tax: number;
   amount_untaxed: number;
@@ -431,7 +435,31 @@ function invoicePaymentLabel(paymentState: string): string {
   return map[paymentState] ?? paymentState;
 }
 
-function checkoutStageLabel(stage: string): string {
+export function paymentMethodLabel(
+  method: string | false | undefined,
+): string {
+  const map: Record<string, string> = {
+    simulated: "Pago simulado",
+    transfer: "Transferencia bancaria",
+    contra_entrega: "Pago contra entrega",
+  };
+  return (typeof method === "string" && map[method]) || "No especificado";
+}
+
+export function checkoutStageLabel(
+  stage: string,
+  paymentMethod?: string | false,
+): string {
+  if (stage === "paid") return "Pagado";
+  if (stage === "invoiced") {
+    if (paymentMethod === "contra_entrega") {
+      return "Facturado · pago contra entrega";
+    }
+    if (paymentMethod === "transfer") {
+      return "Facturado · transferencia pendiente";
+    }
+    return "Facturado";
+  }
   const map: Record<string, string> = {
     quotation: "Pendiente de pago",
     confirmed: "Confirmado",
@@ -450,6 +478,7 @@ async function buildCheckoutResult(orderId: number) {
     "name",
     "state",
     "x_web_stage",
+    "x_payment_method",
     "amount_total",
     "amount_tax",
     "amount_untaxed",
@@ -484,17 +513,52 @@ async function buildCheckoutResult(orderId: number) {
     currencySymbol = currencies[0]?.symbol ?? currencySymbol;
   }
 
+  let billing = {
+    name: "",
+    nit: "CF",
+    address: "",
+    city: "",
+  };
+
+  if (order.partner_id) {
+    const partners = await read<{
+      name: string;
+      vat: string | false;
+      street: string | false;
+      city: string | false;
+    }>("res.partner", [order.partner_id[0]], ["name", "vat", "street", "city"]);
+    const p = partners[0];
+    if (p) {
+      billing = {
+        name: p.name || "",
+        nit: p.vat && p.vat.trim() ? p.vat.trim() : "CF",
+        address: p.street || "",
+        city: p.city || "",
+      };
+    }
+  }
+
+  const payMethod = (order.x_payment_method || undefined) as
+    | CheckoutPaymentMethod
+    | undefined;
+
   return {
     orderId: order.id,
     orderName: order.name,
     state: order.state,
     stage: order.x_web_stage || "confirmed",
-    stageLabel: checkoutStageLabel(order.x_web_stage || "confirmed"),
+    stageLabel: checkoutStageLabel(
+      order.x_web_stage || "confirmed",
+      order.x_payment_method,
+    ),
+    paymentMethod: payMethod,
+    paymentMethodLabel: paymentMethodLabel(order.x_payment_method),
     amountTotal: order.amount_total,
     amountTax: order.amount_tax,
     amountUntaxed: order.amount_untaxed,
     currency: currencyCode,
     currencySymbol,
+    billing,
     invoices: invoices.map((invoice) => ({
       id: invoice.id,
       name: invoice.name,
@@ -592,6 +656,7 @@ export async function createCheckoutOrder(input: CheckoutOrderInput) {
     x_quote_request: false,
     x_wix_order_number: reference,
     x_channel: "wix",
+    x_payment_method: input.paymentMethod,
     note: input.notes ? `Nota del cliente: ${input.notes}` : false,
   });
 

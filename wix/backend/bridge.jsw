@@ -60,3 +60,24 @@ export async function callBridge(path, options = {}) {
 
   return payload;
 }
+
+/**
+ * Solicita una cita técnica / demostración con el equipo de Trebol4Devop.
+ * Invoca el endpoint del bridge para registrar el lead/cita en el CRM de Odoo.
+ *
+ * @param {Object} payload Datos de la cita
+ * @param {string} payload.name Nombre del contacto
+ * @param {string} payload.email Correo electrónico
+ * @param {string} payload.phone Teléfono de contacto
+ * @param {string} [payload.company] Empresa
+ * @param {string} payload.date Fecha en formato YYYY-MM-DD
+ * @param {string} payload.time Hora en formato HH:MM
+ * @param {string} [payload.reason] Motivo o servicio de interés
+ * @param {string} [payload.notes] Requerimientos o notas adicionales
+ * @returns {Promise<Object>} Respuesta del bridge con confirmación y referencia
+ */
+export async function requestAppointment(payload) {
+  return callBridge("/api/checkout/appointment", {
+    body: payload,
+  });
+}

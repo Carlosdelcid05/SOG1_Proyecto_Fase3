@@ -1,16 +1,18 @@
 SHELL := /bin/bash
 COMPOSE := docker compose
 
-.PHONY: help up down logs ps build init bootstrap seed test dump clean bridge tunnel simulate catalog
+.PHONY: help up start url down logs ps build init bootstrap seed test dump clean bridge tunnel simulate catalog
 
 help:
 	@echo "Trebol4Devop — Fase 3 (Wix + Odoo)"
-	@echo "  make up         Levanta PostgreSQL + Odoo + bridge"
+	@echo "  make start      Levanta stack + túnel y muestra los enlaces para Wix"
+	@echo "  make url        Muestra la URL activa del túnel"
+	@echo "  make up         Levanta PostgreSQL + Odoo + bridge (sin túnel)"
 	@echo "  make build      Reconstruye imágenes"
 	@echo "  make init       Instala el módulo e-commerce en Odoo"
 	@echo "  make bootstrap  Crea usuario API, portal demo, stock e imágenes"
 	@echo "  make bridge     Levanta solo el bridge"
-	@echo "  make tunnel     Expone el bridge con Cloudflare Tunnel"
+	@echo "  make tunnel     Alias de make start"
 	@echo "  make catalog    Regenera imágenes y CSV para Wix (BASE_URL=...)"
 	@echo "  make simulate   Simula un pedido de Wix"
 	@echo "  make seed-demo  Carga cotizaciones/pedidos de demostración"
@@ -22,6 +24,12 @@ help:
 
 up:
 	$(COMPOSE) up -d --build db odoo bridge
+
+start:
+	bash scripts/start_demo.sh
+
+url:
+	bash scripts/start_demo.sh url
 
 build:
 	$(COMPOSE) build
@@ -37,10 +45,9 @@ bootstrap:
 bridge:
 	$(COMPOSE) up -d bridge
 
-tunnel:
-	$(COMPOSE) --profile tunnel up -d tunnel
-	@echo "Espera unos segundos y ejecuta:"
-	@echo "  docker compose logs -f tunnel | grep trycloudflare.com"
+# Alias histórico: antes solo levantaba el túnel. Ahora deja todo listo y
+# muestra los enlaces que hay que pegar en Wix.
+tunnel: start
 
 catalog:
 	python3 scripts/generate_images.py $(if $(BASE_URL),--base-url $(BASE_URL),)

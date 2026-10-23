@@ -1,0 +1,332 @@
+{
+  "WEB-BAS-01": {
+    "summary": "Landing page de alto impacto visual y conversión rápida optimizada para dispositivos móviles.",
+    "features": [
+      "Estructura single-page con secciones de presentación y servicios",
+      "Formulario de contacto y botón directo a WhatsApp Business",
+      "Integración con Google Analytics 4 y Meta Pixel",
+      "Diseño responsivo optimizado para carga rápida en redes móviles"
+    ],
+    "delivery": "Entrega estimada: 3 a 5 días hábiles",
+    "idealFor": "Profesionales independientes, lanzamientos de producto y pequeños emprendimientos"
+  },
+  "WEB-COR-02": {
+    "summary": "Sitio web corporativo de hasta 5 páginas diseñado para consolidar la presencia digital y credibilidad de tu empresa.",
+    "features": [
+      "Páginas estructuradas: Inicio, Quiénes Somos, Servicios, Blog/Noticias y Contacto",
+      "Panel auto-administrable con gestor de contenidos intuitivo",
+      "Optimización SEO on-page básica e indexación en Google Search Console",
+      "Certificado de seguridad SSL y cumplimiento de estándares web modernos"
+    ],
+    "delivery": "Entrega estimada: 7 a 10 días hábiles",
+    "idealFor": "Pequeñas y medianas empresas (PYMEs) que buscan proyectar solidez comercial"
+  },
+  "WEB-CAT-03": {
+    "summary": "Plataforma de exhibición digital interactiva para presentar colecciones de productos sin pasarela de cobro directa.",
+    "features": [
+      "Visualización de productos en cuadrícula y lista con filtros por categorías",
+      "Buscador predictivo en tiempo real y vista rápida de detalle",
+      "Botón de cotización por producto conectado a WhatsApp y correo",
+      "Carga masiva inicial de hasta 100 productos mediante hoja de cálculo"
+    ],
+    "delivery": "Entrega estimada: 10 a 12 días hábiles",
+    "idealFor": "Distribuidores mayoristas, boutiques y negocios con inventario de alta rotación"
+  },
+  "WEB-ECO-04": {
+    "summary": "Tienda online completa con carrito de compras, gestión de stock y recepción de pedidos automatizada.",
+    "features": [
+      "Carrito interactivo flotante y checkout simplificado de un solo paso",
+      "Gestión de variantes (colores, tallas) y control básico de existencias",
+      "Notificaciones de pedidos por correo electrónico y panel de administración",
+      "Integración con métodos de pago por transferencia y contra entrega"
+    ],
+    "delivery": "Entrega estimada: 12 a 15 días hábiles",
+    "idealFor": "Comercios minoristas y marcas locales que inician ventas por internet"
+  },
+  "WEB-ECO-05": {
+    "summary": "Solución de comercio electrónico B2B con listas de precios diferenciadas, crédito comercial y pedidos por volumen.",
+    "features": [
+      "Portal de clientes corporativos con roles de compra y aprobación",
+      "Tarifas personalizadas por volumen, cliente o categoría mayorista",
+      "Generación automática de presupuestos, órdenes de compra y facturas proforma",
+      "Integración nativa con sistemas ERP para sincronización de inventario"
+    ],
+    "delivery": "Entrega estimada: 18 a 22 días hábiles",
+    "idealFor": "Empresas distribuidoras, importadores y fabricantes con venta mayorista"
+  },
+  "WEB-POR-06": {
+    "summary": "Campus virtual y plataforma LMS para impartición, seguimiento y monetización de cursos y capacitaciones online.",
+    "features": [
+      "Gestión modular de lecciones en video, cuestionarios interactivos y descargables",
+      "Control de progreso del estudiante y emisión automática de diplomas en PDF",
+      "Perfiles diferenciados para instructores, estudiantes y administradores",
+      "Foro de debate interno por curso y sistema de mensajería"
+    ],
+    "delivery": "Entrega estimada: 20 a 25 días hábiles",
+    "idealFor": "Academias, centros de capacitación, colegios y empresas con planes de inducción"
+  },
+  "APP-CAT-01": {
+    "summary": "Aplicación móvil nativa para Android enfocada en la consulta rápida y visualización fluida de catálogos de productos.",
+    "features": [
+      "Arquitectura nativa con soporte para navegación offline de productos en caché",
+      "Envío de notificaciones push de ofertas y novedades mediante Firebase",
+      "Búsqueda por código de barras / QR utilizando la cámara del dispositivo",
+      "Compilación y publicación guiada en Google Play Store"
+    ],
+    "delivery": "Entrega estimada: 15 a 18 días hábiles",
+    "idealFor": "Fuerzas de venta en campo, representantes comerciales y distribuidores"
+  },
+  "APP-ECO-02": {
+    "summary": "Aplicación móvil multiplataforma (Android e iOS) para compras ágiles con carrito, favoritos y seguimiento de pedidos.",
+    "features": [
+      "Desarrollo multiplataforma en Flutter/React Native con diseño de interfaz moderno",
+      "Registro social y biométrico (huella/FaceID) para inicio de sesión seguro",
+      "Sincronización en tiempo real del carrito con la tienda web",
+      "Historial de compras, estado del pedido en vivo y pasarela de pagos"
+    ],
+    "delivery": "Entrega estimada: 25 a 30 días hábiles",
+    "idealFor": "Empresas de retail consolidadas y marcas que buscan fidelizar su canal móvil"
+  },
+  "APP-RES-03": {
+    "summary": "App móvil intuitiva para calendarización de citas, reservas de servicios y control de turnos en tiempo real.",
+    "features": [
+      "Selección de especialista, servicio, fecha y hora según disponibilidad real",
+      "Recordatorios automáticos vía WhatsApp y notificaciones push previas a la cita",
+      "Panel de administración móvil para confirmar, reprogramar o cancelar turnos",
+      "Sincronización bidireccional con Google Calendar y Outlook"
+    ],
+    "delivery": "Entrega estimada: 15 a 20 días hábiles",
+    "idealFor": "Clínicas médicas, salones de belleza, spas, consultorías y talleres mecánicos"
+  },
+  "APP-DEL-04": {
+    "summary": "Ecosistema móvil completo para gestión de entregas a domicilio con geolocalización y seguimiento de repartidores.",
+    "features": [
+      "Módulo para cliente (menú/productos y seguimiento en mapa en tiempo real)",
+      "Módulo para repartidor con aceptación de pedidos y navegación GPS integrada",
+      "Cálculo dinámico de tarifa de envío según radio kilométrico de entrega",
+      "Panel de cocina o despacho para control de preparación y tiempos de entrega"
+    ],
+    "delivery": "Entrega estimada: 30 a 35 días hábiles",
+    "idealFor": "Restaurantes, farmacias, supermercados express y empresas de mensajería local"
+  },
+  "APP-INT-05": {
+    "summary": "Herramienta móvil para digitalización de procesos operativos, reportes de personal en terreno y levantamiento de datos.",
+    "features": [
+      "Formularios dinámicos con captura de firma digital, fotos y geolocalización",
+      "Operación garantizada sin conexión a internet y sincronización automática",
+      "Asignación de tareas y rutas de trabajo desde la plataforma central",
+      "Exportación automática de reportes ejecutivos en formato Excel y PDF"
+    ],
+    "delivery": "Entrega estimada: 18 a 22 días hábiles",
+    "idealFor": "Equipos de supervisión en obra, auditores, técnicos de soporte y cuadrillas de campo"
+  },
+  "APP-FID-06": {
+    "summary": "Aplicación para fidelización de clientes mediante acumulación de puntos, recompensas y cupones de descuento.",
+    "features": [
+      "Monedero digital de puntos acumulables por volumen o frecuencia de compra",
+      "Generación de tarjeta de lealtad con código QR personalizable",
+      "Catálogo de recompensas y canje instantáneo en sucursal",
+      "Segmentación de clientes y promociones exclusivas para socios VIP"
+    ],
+    "delivery": "Entrega estimada: 15 a 18 días hábiles",
+    "idealFor": "Cadenas de retail, cafeterías, franquicias y clubes de beneficios"
+  },
+  "MAN-PLA-01": {
+    "summary": "Plan mensual esencial de mantenimiento para garantizar la operatividad, estabilidad y copias de seguridad de tu web.",
+    "features": [
+      "Monitoreo continuo de disponibilidad 24/7 (uptime) con alertas de caída",
+      "Copias de seguridad semanales en almacenamiento en la nube externo",
+      "Actualización mensual de complementos, temas y núcleo del sistema",
+      "Reporte ejecutivo mensual de estado, visitas e incidentes atendidos"
+    ],
+    "delivery": "Activación inmediata · Facturación mensual recurrente",
+    "idealFor": "Sitios informativos y landing pages que requieren tranquilidad operativa"
+  },
+  "MAN-PLA-02": {
+    "summary": "Mantenimiento mensual avanzado con soporte correctivo prioritario, resolución de errores y ajustes de contenido.",
+    "features": [
+      "Hasta 6 horas mensuales de soporte técnico y cambios de contenido",
+      "Copias de seguridad diarias automatizadas con retención de 30 días",
+      "Optimización mensual de base de datos y limpieza de archivos temporales",
+      "Tiempo de respuesta garantizado menor a 4 horas en días hábiles"
+    ],
+    "delivery": "Activación inmediata · Facturación mensual recurrente",
+    "idealFor": "PYMEs y negocios con dinamismo comercial constante en su portal"
+  },
+  "MAN-PLA-03": {
+    "summary": "Cobertura integral de nivel corporativo para plataformas críticas con soporte 24/7 y SLA garantizado.",
+    "features": [
+      "Hasta 15 horas mensuales de soporte correctivo, preventivo y evolutivo",
+      "SLA con respuesta crítica menor a 1 hora los 365 días del año",
+      "Auditoría mensual de seguridad, análisis de vulnerabilidades y hardening",
+      "Consultoría técnica estratégica mensual con ingenieros senior asignados"
+    ],
+    "delivery": "Activación inmediata · Facturación mensual recurrente",
+    "idealFor": "Portales de alto tráfico, tiendas e-commerce activas y plataformas corporativas"
+  },
+  "MAN-APP-04": {
+    "summary": "Póliza de mantenimiento especializado para aplicaciones móviles Android e iOS asegurando compatibilidad continua.",
+    "features": [
+      "Actualización de librerías y adaptación a nuevas versiones de Android e iOS",
+      "Monitoreo y resolución de fallos reportados por Crashlytics",
+      "Gestión de certificados de firma y renovación de políticas de tiendas oficiales",
+      "Soporte correctivo mensual de hasta 8 horas para resolución de bugs"
+    ],
+    "delivery": "Activación inmediata · Facturación mensual recurrente",
+    "idealFor": "Empresas con aplicaciones productivas en Google Play y Apple App Store"
+  },
+  "MAN-BDD-05": {
+    "summary": "Servicio especializado de afinamiento, respaldo y mantenimiento preventivo para motores de bases de datos relacionales.",
+    "features": [
+      "Optimización de índices, análisis de consultas lentas (slow queries) y vacuum",
+      "Estrategia de respaldos lógicos y físicos con pruebas periódicas de restauración",
+      "Supervisión de concurrencia, bloqueo de transacciones y consumo de almacenamiento",
+      "Configuración de réplicas de lectura y alta disponibilidad en PostgreSQL/MySQL"
+    ],
+    "delivery": "Activación en 24 a 48 horas · Facturación mensual",
+    "idealFor": "Sistemas ERP, CRMs y aplicaciones transaccionales con volumen de datos creciente"
+  },
+  "MAN-SEC-06": {
+    "summary": "Protección perimetral proactiva contra intrusiones, infecciones por malware y ataques distribuidos comunes.",
+    "features": [
+      "Escaneo periódico automatizado de código malicioso y puertas traseras (backdoors)",
+      "Implementación y ajuste fino de reglas de Web Application Firewall (WAF)",
+      "Aplicación urgente de parches de seguridad para vulnerabilidades de día cero",
+      "Protocolo de aislamiento y desinfección garantizada ante incidentes de seguridad"
+    ],
+    "delivery": "Activación inmediata · Facturación mensual recurrente",
+    "idealFor": "Comercios electrónicos, portales financieros y sitios con manejo de datos sensibles"
+  },
+  "LIC-FAC-01": {
+    "summary": "Módulo certificado para emisión y recepción de Facturas Electrónicas en Línea (FEL) cumpliendo normativa SAT.",
+    "features": [
+      "Generación instantánea de XML con firma electrónica y obtención de DTE/CAE",
+      "Formato gráfico de factura en PDF personalizado con logotipo y código QR",
+      "Validación automática de NIT con la SAT en tiempo real",
+      "Envío automático de factura electrónica por correo al cliente al confirmar"
+    ],
+    "delivery": "Entrega e instalación: 2 a 3 días hábiles",
+    "idealFor": "Empresas guatemaltecas que requieren certificar facturas bajo régimen FEL"
+  },
+  "LIC-INV-02": {
+    "summary": "Módulo avanzado para control logístico de inventarios distribuidos en múltiples bodegas físicas o virtuales.",
+    "features": [
+      "Trazabilidad completa de movimientos, transferencias internas y ajustes de stock",
+      "Manejo de números de lote, números de serie y fechas de vencimiento",
+      "Reglas automatizadas de reabastecimiento con punto de pedido mínimo y máximo",
+      "Valoración de inventario en tiempo real por métodos FIFO, LIFO o Costo Promedio"
+    ],
+    "delivery": "Entrega e instalación: 3 a 4 días hábiles",
+    "idealFor": "Empresas comerciales, distribuidoras y cadenas con más de un punto de almacenamiento"
+  },
+  "LIC-CRM-03": {
+    "summary": "Módulo para optimización de embudos comerciales con automatización de seguimiento y asignación de prospectos.",
+    "features": [
+      "Flujos de trabajo automatizados para asignación rotativa de leads entre vendedores",
+      "Disparadores de correos electrónicos y plantillas según etapa del embudo comercial",
+      "Tableros visuales de desempeño de ventas y proyección de ingresos esperados",
+      "Historial centralizado de llamadas, reuniones y notas por cliente potencial"
+    ],
+    "delivery": "Entrega e instalación: 2 a 3 días hábiles",
+    "idealFor": "Equipos comerciales y departamentos de ventas que buscan elevar su tasa de cierre"
+  },
+  "LIC-POS-04": {
+    "summary": "Módulo de Punto de Venta optimizado para pantallas táctiles con operación continua offline y arqueo de caja.",
+    "features": [
+      "Interfaz táctil ultrarrápida diseñada para lectores de código de barras y básculas",
+      "Operación continua sin interrupciones incluso ante caídas de la conexión a internet",
+      "Control de apertura, cortes X/Z y arqueos de caja con detalle por método de pago",
+      "Sincronización automática de ventas con inventario y contabilidad central"
+    ],
+    "delivery": "Entrega e instalación: 3 a 5 días hábiles",
+    "idealFor": "Tiendas de conveniencia, farmacias, ferreterías, cafeterías y sucursales retail"
+  },
+  "LIC-PAS-05": {
+    "summary": "Conector seguro para procesar cobros con tarjetas de crédito y débito mediante pasarelas de pago guatemaltecas.",
+    "features": [
+      "Compatibilidad nativa con procesadores locales (VisaNet, CyberSource, Pagos BAC)",
+      "Cumplimiento con estándares de seguridad PCI-DSS y tokenización de tarjetas",
+      "Soporte para cobros en cuotas sin intereses (Visacuotas / Mastercuotas)",
+      "Conciliación automática de liquidaciones bancarias y comisiones retenidas"
+    ],
+    "delivery": "Entrega e instalación: 4 a 6 días hábiles",
+    "idealFor": "Plataformas de comercio digital y empresas con cobros recurrentes en línea"
+  },
+  "LIC-REP-06": {
+    "summary": "Suite integral de reportería contable y financiera con estados de resultados, balances y libros fiscales.",
+    "features": [
+      "Generación con un clic de Balance General, Estado de Resultados y Balanza de Comprobación",
+      "Libro Diario, Libro Mayor, Libro de Compras y Libro de Ventas en formato oficial",
+      "Módulo de análisis analítico multidimensional por centros de costos y proyectos",
+      "Exportación configurable a hojas de cálculo Excel y formatos imprimibles en PDF"
+    ],
+    "delivery": "Entrega e instalación: 2 a 3 días hábiles",
+    "idealFor": "Contadores generales, auditores internos y direcciones financieras de empresas"
+  },
+  "SRV-AUD-01": {
+    "summary": "Evaluación exhaustiva de seguridad ofensiva para identificar y mitigar fallos en tu infraestructura web.",
+    "features": [
+      "Pruebas de intrusión (pentesting) basadas en la metodología OWASP Top 10",
+      "Análisis estático y dinámico de vulnerabilidades en código y servidores web",
+      "Revisión de configuraciones de cabeceras de seguridad, cifrado TLS y permisos",
+      "Informe técnico detallado con calificación de riesgo (CVSS) y guía de remediación"
+    ],
+    "delivery": "Ejecución y entrega del informe: 5 a 7 días hábiles",
+    "idealFor": "Organizaciones que manejan datos sensibles o van a pasar auditorías de cumplimiento"
+  },
+  "SRV-OPT-02": {
+    "summary": "Servicio de afinamiento técnico para acelerar el tiempo de carga y maximizar la puntuación en Google Core Web Vitals.",
+    "features": [
+      "Optimización, compresión y conversión de imágenes a formatos modernos (WebP/AVIF)",
+      "Minificación y concatenación de scripts JavaScript y hojas de estilo CSS",
+      "Implementación de estrategias de almacenamiento en caché y redes CDN",
+      "Reducción del Largest Contentful Paint (LCP) y eliminación de bloqueos de renderizado"
+    ],
+    "delivery": "Ejecución y reporte comparativo: 3 a 5 días hábiles",
+    "idealFor": "Sitios con alto rebote o tiendas donde la lentitud impacta las conversiones"
+  },
+  "SRV-MIG-03": {
+    "summary": "Traslado seguro de sitios web, tiendas o aplicaciones entre proveedores de hosting con tiempo de inactividad casi nulo.",
+    "features": [
+      "Planificación previa con respaldo integral de archivos, bases de datos y configuraciones",
+      "Migración de cuentas de correo electrónico corporativo preservando buzones e historial",
+      "Ajuste y propagación de registros DNS con cambio transparente sin pérdida de datos",
+      "Pruebas de integridad funcional y verificación de certificados SSL en el nuevo servidor"
+    ],
+    "delivery": "Ejecución planificada: 2 a 4 días hábiles",
+    "idealFor": "Empresas que cambian de servidor para mejorar rendimiento o reducir costos de hosting"
+  },
+  "SRV-API-04": {
+    "summary": "Construcción de interfaces API RESTful seguras y escalables para conectar Odoo o tu web con sistemas externos.",
+    "features": [
+      "Diseño de arquitectura API REST / JSON-RPC con autenticación robusta por API Key o OAuth2",
+      "Mapeo bidireccional y transformación de datos entre diferentes plataformas",
+      "Documentación interactiva de endpoints mediante OpenAPI / Swagger",
+      "Implementación de logs de auditoría, manejo de reintentos y tolerancia a fallos"
+    ],
+    "delivery": "Desarrollo y pruebas: 8 a 12 días hábiles",
+    "idealFor": "Negocios que necesitan sincronizar su ERP con CRMs externos, pasarelas o almacenes"
+  },
+  "SRV-CAP-05": {
+    "summary": "Programa formativo personalizado impartido por expertos para capacitar a tu equipo en el uso de Odoo y herramientas web.",
+    "features": [
+      "Sesiones interactivas en vivo (hasta 8 horas totales) vía videoconferencia o presencial",
+      "Talleres prácticos adaptados a los procesos específicos de tu modelo de negocio",
+      "Manuales operativos de procedimiento en PDF y grabaciones de cada sesión",
+      "Sesión de preguntas, resolución de dudas y certificación de participación"
+    ],
+    "delivery": "Coordinación de fechas en un lapso de 5 a 10 días hábiles",
+    "idealFor": "Equipos administrativos, comerciales y contables en proceso de adopción de software"
+  },
+  "SRV-SEO-06": {
+    "summary": "Estrategia técnica y estructural de posicionamiento en buscadores para incrementar el tráfico orgánico cualificado.",
+    "features": [
+      "Estudio exhaustivo de palabras clave y análisis de competencia del sector",
+      "Optimización de metaetiquetas (Title, Description, OpenGraph) y encabezados (H1-H3)",
+      "Configuración de datos estructurados Schema.org para fragmentos enriquecidos en Google",
+      "Creación y optimización de sitemap XML, archivo robots.txt y canibalización de URLs"
+    ],
+    "delivery": "Implementación e informe inicial: 5 a 8 días hábiles",
+    "idealFor": "Marcas y empresas que buscan captar clientes recurrentes desde Google sin pagar pauta"
+  }
+}

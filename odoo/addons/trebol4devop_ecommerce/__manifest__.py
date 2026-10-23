@@ -22,6 +22,7 @@ tienda Wix, y centraliza la lógica transaccional que utiliza el bridge:
         "sale_stock",
         "sale_crm",
         "account",
+        "crm",
     ],
     "data": [
         "views/sale_order_views.xml",

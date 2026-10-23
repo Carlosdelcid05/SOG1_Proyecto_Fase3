@@ -32,15 +32,22 @@ Credenciales de demostración:
 
 ## Exponer el bridge a Wix
 
-Wix necesita una URL HTTPS pública. Con Cloudflare Tunnel:
+Wix necesita una URL HTTPS pública. El comando recomendado levanta todo y deja
+los enlaces listos:
 
 ```bash
-docker compose --profile tunnel up -d tunnel
-docker compose logs -f tunnel | grep trycloudflare.com
+make start
 ```
+
+Actualiza `.env` con `BRIDGE_PUBLIC_URL`, regenera el CSV y escribe
+`wix/TUNEL_ACTUAL.md`. Para consultar solo la URL activa: `make url`.
 
 Copia la URL y configúrala en Wix Secrets Manager como `BRIDGE_URL`. El secreto
 `BRIDGE_KEY` debe coincidir con `BRIDGE_API_KEY` del `.env`.
+
+El túnel rápido cambia si reinicias el contenedor o apagas la PC. Para una URL
+fija revisa [`docs/tunel-estable.md`](docs/tunel-estable.md). Si el sitio debe
+seguir disponible con la PC apagada, usa un VPS.
 
 ## Pruebas
 

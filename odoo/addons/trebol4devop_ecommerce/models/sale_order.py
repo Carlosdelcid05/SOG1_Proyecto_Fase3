@@ -38,6 +38,17 @@ class SaleOrder(models.Model):
         default="manual",
         readonly=True,
     )
+    x_payment_method = fields.Selection(
+        selection=[
+            ("simulated", "Simulado"),
+            ("transfer", "Transferencia"),
+            ("contra_entrega", "Contra Entrega"),
+        ],
+        string="Método de pago web",
+        copy=False,
+        readonly=True,
+        help="Método de pago seleccionado en el checkout de la tienda web.",
+    )
     x_web_stage = fields.Selection(
         selection=[
             ("quotation", "Cotización"),

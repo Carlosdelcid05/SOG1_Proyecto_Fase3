@@ -23,5 +23,8 @@ odoo_data/
 .DS_Store
 Thumbs.db
 
+# URL efímera del túnel (se regenera con `make start`)
+wix/TUNEL_ACTUAL.md
+
 # Capturas temporales
 /tmp/

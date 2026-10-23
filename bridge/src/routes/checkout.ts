@@ -4,7 +4,8 @@ import { asyncHandler } from "../async-handler.js";
 import { signPortalToken } from "../auth.js";
 import { config } from "../config.js";
 import { searchRead } from "../odoo/client.js";
-import { createCheckoutOrder } from "../odoo/orders.js";
+import { createAppointment } from "../odoo/appointments.js";
+import { createCheckoutOrder, paymentMethodLabel } from "../odoo/orders.js";
 import { signPdfToken } from "../odoo/pdf.js";
 
 export const checkoutRouter = Router();
@@ -40,7 +41,7 @@ function clientIp(req: Request): string {
   );
 }
 
-function checkoutRateLimit(
+export function checkoutRateLimit(
   req: Request,
   res: Response,
   next: NextFunction,
@@ -145,7 +146,24 @@ const orderSchema = z.object({
     )
     .min(1)
     .max(50),
-  paymentMethod: z.enum(["simulated", "transfer"]),
+  paymentMethod: z.enum(["simulated", "transfer", "contra_entrega"]),
+  notes: z.string().trim().max(2000).optional(),
+});
+
+const appointmentSchema = z.object({
+  name: z.string().trim().min(2).max(160),
+  email: z.string().trim().email().max(160),
+  phone: z.string().trim().min(6).max(40),
+  company: z.string().trim().max(160).optional(),
+  date: z
+    .string()
+    .trim()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Formato de fecha inválido (YYYY-MM-DD)"),
+  time: z
+    .string()
+    .trim()
+    .regex(/^\d{2}:\d{2}$/, "Formato de hora inválido (HH:MM)"),
+  reason: z.string().trim().min(2).max(200),
   notes: z.string().trim().max(2000).optional(),
 });
 
@@ -179,7 +197,9 @@ checkoutRouter.post(
       ok: true,
       data: {
         ...result,
-        paymentMethod: input.paymentMethod,
+        paymentMethod: result.paymentMethod ?? input.paymentMethod,
+        paymentMethodLabel:
+          result.paymentMethodLabel ?? paymentMethodLabel(input.paymentMethod),
         portalUrl: `${host}/portal?token=${encodeURIComponent(
           signPortalToken(email),
         )}`,
@@ -192,6 +212,23 @@ checkoutRouter.post(
             signPdfToken("invoice", invoice.id, email),
           )}`,
         })),
+      },
+    });
+  }),
+);
+
+checkoutRouter.post(
+  "/appointment",
+  checkoutRateLimit,
+  asyncHandler(async (req, res) => {
+    const input = appointmentSchema.parse(req.body);
+    const result = await createAppointment(input);
+    res.status(201).json({
+      ok: true,
+      data: {
+        leadId: result.leadId,
+        leadName: result.leadName,
+        reference: result.reference,
       },
     });
   }),

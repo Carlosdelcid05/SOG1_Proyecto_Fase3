@@ -143,6 +143,11 @@ $w.onReady(async () => {
   if (repeater) {
     repeater.onItemReady(($item, itemData) => {
       $item("#txtName").text = itemData.name;
+      try {
+        $item("#txtName").tooltip = itemData.name;
+      } catch (e) {
+        /* tooltip opcional en Wix */
+      }
       $item("#txtSku").text = `SKU ${itemData.sku}`;
       $item("#txtUnit").text = `${itemData.unitPriceLabel} c/u`;
       $item("#txtPrice").text = itemData.lineTotalLabel;

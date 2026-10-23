@@ -17,6 +17,8 @@ Hace lo siguiente:
 
 import base64
 import glob
+import html
+import json
 import os
 
 from odoo import fields
@@ -95,6 +97,40 @@ products = env["product.product"].search(
     ]
 )
 
+details_path = "/mnt/scripts/catalog_details.json"
+if not os.path.exists(details_path):
+    base_dir = (
+        os.path.dirname(os.path.abspath(__file__))
+        if "__file__" in globals()
+        else "/mnt/scripts"
+    )
+    details_path = os.path.join(base_dir, "catalog_details.json")
+
+catalog_details = {}
+if os.path.exists(details_path):
+    try:
+        with open(details_path, "r", encoding="utf-8") as df:
+            catalog_details = json.load(df)
+        print("· Detalles de catálogo cargados desde: %s" % details_path)
+    except Exception as err:
+        print("  ! Error al cargar %s: %s" % (details_path, err))
+else:
+    print("  ! No se encontró catalog_details.json en %s ni ruta relativa" % details_path)
+
+def build_html_description(item):
+    summary = html.escape(item.get("summary", ""))
+    features = "".join("<li>%s</li>" % html.escape(f) for f in item.get("features", []))
+    delivery = html.escape(item.get("delivery", ""))
+    ideal_for = html.escape(item.get("idealFor", ""))
+    return (
+        "<p>%s</p>"
+        "<p><strong>Características principales:</strong></p>"
+        "<ul>%s</ul>"
+        "<p><strong>Tiempo de entrega:</strong> %s</p>"
+        "<p><strong>Ideal para:</strong> %s</p>"
+        % (summary, features, delivery, ideal_for)
+    )
+
 descriptions = {
     "Sitios Web": "Diseño y desarrollo de sitios web profesionales, responsivos y optimizados para conversión.",
     "Apps Móviles": "Aplicación móvil nativa o multiplataforma, con soporte, publicación y mantenimiento.",
@@ -106,16 +142,25 @@ descriptions = {
 updated = 0
 for product in products:
     category = product.categ_id.name or "Servicios Adicionales"
-    description = descriptions.get(category, descriptions["Servicios Adicionales"])
+    fallback_desc = descriptions.get(category, descriptions["Servicios Adicionales"])
+    code = product.default_code
+
     vals = {
         "invoice_policy": "order",
         "sale_ok": True,
         "purchase_ok": False,
     }
-    if not product.description_sale:
-        vals["description_sale"] = description
-    if not product.description:
-        vals["description"] = description
+
+    if code and code in catalog_details:
+        rich_desc = build_html_description(catalog_details[code])
+        vals["description_sale"] = rich_desc
+        vals["description"] = rich_desc
+    else:
+        if not product.description_sale:
+            vals["description_sale"] = fallback_desc
+        if not product.description:
+            vals["description"] = fallback_desc
+
     product.write(vals)
 
     current = product.with_context(
@@ -138,7 +183,11 @@ for product in products:
     if not code:
         continue
     matches = glob.glob(os.path.join(image_dir, "%s.*" % code))
-    matches = [m for m in matches if m.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))]
+    # Priorizar PNG para compatibilidad con Odoo image_1920
+    matches = sorted(
+        [m for m in matches if m.lower().endswith((".png", ".jpg", ".jpeg", ".webp"))],
+        key=lambda m: (0 if m.lower().endswith(".png") else 1, m),
+    )
     if not matches:
         continue
     with open(matches[0], "rb") as image_file:

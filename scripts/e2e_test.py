@@ -87,6 +87,17 @@ def main() -> None:
     check("Catálogo público del checkout", len(public_catalog) == 30, str(len(public_catalog)))
     check("Producto con imagen", bool(public_catalog[0].get("image")))
 
+    product_with_desc = next(
+        (p for p in public_catalog if p.get("description") and len(p["description"]) > 100),
+        None,
+    )
+    check(
+        "Detalle de producto con descripción enriquecida",
+        product_with_desc is not None
+        and ("<ul>" in product_with_desc["description"] or "Características principales" in product_with_desc["description"]),
+        str(product_with_desc.get("sku") if product_with_desc else "ninguno"),
+    )
+
     checkout_id = f"e2e-checkout-{int(time.time() * 1000)}"
     checkout_email = f"checkout.{int(time.time())}@example.com"
     checkout = call(
@@ -127,6 +138,80 @@ def main() -> None:
     )["data"]
     check("Checkout es idempotente", replay.get("replayed") is True, str(replay))
     check("No duplica el pedido", replay.get("orderId") == checkout.get("orderId"))
+
+    # Pedido contra entrega (queda facturado, no pagado)
+    cod_checkout_id = f"e2e-cod-{int(time.time() * 1000)}"
+    cod_email = f"cod.{int(time.time())}@example.com"
+    cod_vat = "9876543-2"
+    cod_payload = {
+        "checkoutId": cod_checkout_id,
+        "customer": {
+            "name": "Cliente Contra Entrega E2E",
+            "email": cod_email,
+            "phone": "+502 4444-1111",
+            "company": "Distribuidora del Valle S.A.",
+            "vat": cod_vat,
+            "street": "Avenida Reforma 12-01, Zona 10",
+            "city": "Guatemala",
+        },
+        "items": [{"sku": "WEB-COR-02", "quantity": 1}],
+        "paymentMethod": "contra_entrega",
+        "notes": "Entrega en horario de oficina",
+    }
+    cod = call("POST", "/api/checkout/orders", cod_payload)["data"]
+    check("Contra entrega crea pedido", bool(cod.get("orderId")), str(cod))
+    check("Contra entrega queda facturado", cod.get("stage") == "invoiced", str(cod))
+    check("Contra entrega registra método", cod.get("paymentMethod") == "contra_entrega", str(cod))
+    check(
+        "Contra entrega etiqueta método",
+        "contra entrega" in str(cod.get("paymentMethodLabel", "")).lower(),
+        str(cod.get("paymentMethodLabel")),
+    )
+    check("Contra entrega tiene factura", len(cod.get("invoices", [])) >= 1)
+    check(
+        "Factura contra entrega pendiente de pago",
+        cod["invoices"][0].get("paymentState") not in ("paid", "in_payment"),
+        str(cod["invoices"][0]),
+    )
+    check(
+        "Contra entrega registra NIT",
+        cod.get("billing", {}).get("nit") == cod_vat,
+        str(cod.get("billing")),
+    )
+    diff_tax = abs(
+        (cod.get("amountUntaxed", 0) + cod.get("amountTax", 0))
+        - cod.get("amountTotal", 0)
+    )
+    check("Cuadre fiscal de totales (IVA)", diff_tax <= 0.02, f"diff={diff_tax:.4f}")
+
+    cod_replay = call("POST", "/api/checkout/orders", cod_payload)["data"]
+    check("Contra entrega es idempotente", cod_replay.get("replayed") is True, str(cod_replay))
+    check("Contra entrega no duplica el pedido", cod_replay.get("orderId") == cod.get("orderId"))
+
+    # Agendamiento de citas técnicas
+    now_ts = int(time.time() * 1000)
+    apt_payload = {
+        "name": "Carlos Mendoza",
+        "email": EMAIL,
+        "phone": "+502 2300-1111",
+        "company": "Corporación TecnoGuate",
+        "date": "2026-11-15",
+        "time": "10:30",
+        "reason": f"Consultoría ERP Fase 3 {now_ts}",
+        "notes": "Prueba E2E de cita técnica",
+    }
+    apt = call("POST", "/api/checkout/appointment", apt_payload)["data"]
+    check("Cita agendada crea lead en Odoo", bool(apt.get("leadId")), str(apt))
+    check("Cita devuelve nombre de lead", bool(apt.get("leadName")), str(apt))
+    check("Cita devuelve referencia única", bool(apt.get("reference")), str(apt))
+
+    apt_replay = call("POST", "/api/checkout/appointment", apt_payload)["data"]
+    check(
+        "Cita es idempotente",
+        apt_replay.get("leadId") == apt.get("leadId")
+        and apt_replay.get("reference") == apt.get("reference"),
+        str(apt_replay),
+    )
 
     quote = call(
         "POST",

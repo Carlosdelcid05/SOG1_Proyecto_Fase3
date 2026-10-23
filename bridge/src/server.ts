@@ -49,6 +49,8 @@ app.get("/", (_req, res) => {
       "GET  /checkout",
       "GET  /api/checkout/products",
       "POST /api/checkout/orders",
+      "POST /api/checkout/appointment",
+      "GET  /agendar-cita",
       "GET  /portal",
       "POST /api/portal/login",
     ],
@@ -90,6 +92,13 @@ app.get("/portal", (_req, res) => {
 });
 app.get("/portal/", (_req, res) => {
   res.sendFile(path.join(process.cwd(), "public", "portal.html"));
+});
+// Cita pública en el bridge: no requiere Velo ni funciones pagas de Wix.
+app.get("/agendar-cita", (_req, res) => {
+  res.sendFile(path.join(process.cwd(), "public", "appointment.html"));
+});
+app.get("/agendar-cita/", (_req, res) => {
+  res.sendFile(path.join(process.cwd(), "public", "appointment.html"));
 });
 app.use("/api/checkout", checkoutRouter);
 

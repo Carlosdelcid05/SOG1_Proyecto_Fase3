@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agendar cita · Trebol4Devop</title>
+    <meta
+      name="description"
+      content="Agenda una asesoría técnica con Trebol4Devop: Odoo ERP, e-commerce, DevOps y desarrollo a la medida."
+    />
+    <style>
+      :root {
+        --green: #0b3d3b;
+        --green-2: #145a55;
+        --gold: #d8a24a;
+        --bg: #f7f4ec;
+        --card: #ffffff;
+        --ink: #172525;
+        --muted: #5f6f6b;
+        --line: rgba(11, 61, 59, 0.12);
+        --radius: 18px;
+        --shadow: 0 18px 50px rgba(12, 45, 43, 0.12);
+        --danger: #b42318;
+        --ok: #167a4a;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; overflow-x: hidden; }
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1000px 500px at 8% -10%, #e7f0e9 0%, transparent 55%),
+          radial-gradient(800px 400px at 100% 0%, #f6ead2 0%, transparent 50%),
+          var(--bg);
+        min-height: 100vh;
+      }
+      a { color: var(--green-2); }
+      .shell { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+      header {
+        background: var(--green);
+        color: #fff;
+        padding: 16px 0;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; font-weight: 900; }
+      .brand-mark {
+        width: 38px; height: 38px; border-radius: 12px;
+        background: linear-gradient(135deg, var(--gold), #b97d2a);
+        display: grid; place-items: center; color: var(--green); font-size: 18px;
+      }
+      .header-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+      .header-link {
+        color: #d9e8e3; text-decoration: none; font-size: 14px; font-weight: 700;
+        padding: 8px 12px; border-radius: 10px;
+      }
+      .header-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+      .wa-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #25d366; color: #073b1c; font-weight: 800;
+        text-decoration: none; padding: 8px 14px; border-radius: 999px;
+        font-size: 13px; box-shadow: 0 4px 12px rgba(37, 211, 102, .3);
+      }
+      main { padding: 34px 0 54px; }
+      .hero { max-width: 760px; margin-bottom: 24px; }
+      .eyebrow {
+        color: var(--green-2); font-size: 12px; font-weight: 900;
+        letter-spacing: .12em; text-transform: uppercase;
+      }
+      h1 { font-size: clamp(28px, 4vw, 44px); line-height: 1.08; margin: 8px 0 10px; }
+      .lede { color: var(--muted); line-height: 1.6; margin: 0; }
+      .layout {
+        display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(280px, .55fr);
+        gap: 22px; align-items: start;
+      }
+      .card {
+        background: var(--card); border: 1px solid var(--line);
+        border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px;
+        min-width: 0;
+      }
+      .card h2 { margin: 0 0 6px; font-size: 22px; }
+      .hint { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .field { display: grid; gap: 6px; min-width: 0; }
+      .field.full { grid-column: 1 / -1; }
+      label { font-size: 12px; font-weight: 800; color: var(--green); }
+      input, select, textarea {
+        width: 100%; border: 1px solid var(--line); border-radius: 12px;
+        padding: 12px 13px; font: inherit; color: var(--ink); background: #fff;
+      }
+      input:focus, select:focus, textarea:focus {
+        outline: none; border-color: var(--green-2);
+        box-shadow: 0 0 0 3px rgba(20, 90, 85, .12);
+      }
+      textarea { min-height: 96px; resize: vertical; }
+      .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        border: 0; border-radius: 12px; padding: 14px 18px; font: inherit;
+        font-weight: 900; cursor: pointer; text-decoration: none;
+      }
+      .btn-primary { background: var(--green); color: #fff; width: 100%; margin-top: 18px; }
+      .btn-primary:hover { background: var(--green-2); }
+      .btn-primary:disabled { opacity: .65; cursor: wait; }
+      .btn-ghost { background: #fff; color: var(--green); border: 1px solid var(--line); }
+      .status { display: none; border-radius: 12px; padding: 14px 16px; margin-top: 16px; font-weight: 700; line-height: 1.5; }
+      .status.show { display: block; }
+      .status.ok { background: #e8f5ee; color: #14532d; border: 1px solid #b7e4c7; }
+      .status.error { background: #fef3f2; color: var(--danger); border: 1px solid #fecdca; }
+      .side { display: grid; gap: 16px; }
+      .side h3 { margin: 0 0 8px; font-size: 16px; }
+      .side p, .side li { color: var(--muted); font-size: 14px; line-height: 1.55; }
+      .side ul { margin: 0; padding-left: 18px; }
+      .contact-box {
+        background: var(--green); color: #fff; border-radius: var(--radius);
+        padding: 22px; box-shadow: var(--shadow);
+      }
+      .contact-box h3 { color: #fff; }
+      .contact-box p { color: #d9e8e3; }
+      .contact-box a { color: #fff; font-weight: 800; }
+      .floating-wa {
+        position: fixed; right: 20px; bottom: 20px; z-index: 50;
+        display: inline-flex; align-items: center; gap: 8px;
+        background: #25d366; color: #073b1c; text-decoration: none;
+        font-weight: 900; padding: 14px 18px; border-radius: 999px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .22);
+      }
+      footer { color: var(--muted); text-align: center; font-size: 12px; padding: 26px 0 40px; }
+      @media (max-width: 860px) {
+        .layout { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="shell header-inner">
+        <a class="brand" href="/checkout">
+          <span class="brand-mark">◆</span>
+          <span>Trebol4Devop</span>
+        </a>
+        <div class="header-actions">
+          <a class="header-link" href="/checkout">Catálogo y checkout</a>
+          <a class="header-link" href="/portal">Portal de clientes</a>
+          <a
+            class="wa-btn"
+            href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20quiero%20agendar%20una%20asesor%C3%ADa."
+            target="_blank"
+            rel="noopener"
+          >WhatsApp</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <span class="eyebrow">Asesoría sin costo</span>
+        <h1>Agenda una cita técnica</h1>
+        <p class="lede">
+          Cuéntanos qué necesitas y coordinamos una videollamada para revisar tu
+          proyecto de Odoo ERP, e-commerce, DevOps o desarrollo a la medida.
+          La solicitud queda registrada en el CRM de Odoo.
+        </p>
+      </section>
+
+      <div class="layout">
+        <section class="card">
+          <h2>Solicitar cita</h2>
+          <p class="hint">Los campos marcados con * son obligatorios.</p>
+
+          <form id="appointment-form" novalidate>
+            <div class="grid">
+              <div class="field">
+                <label for="name">Nombre completo *</label>
+                <input id="name" name="name" autocomplete="name" required minlength="2" maxlength="160" placeholder="Ej. Ana López" />
+              </div>
+              <div class="field">
+                <label for="email">Correo electrónico *</label>
+                <input id="email" name="email" type="email" autocomplete="email" required maxlength="160" placeholder="ana@empresa.com" />
+              </div>
+              <div class="field">
+                <label for="phone">Teléfono / WhatsApp *</label>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" required minlength="6" maxlength="40" placeholder="+502 5555 5555" />
+              </div>
+              <div class="field">
+                <label for="company">Empresa (opcional)</label>
+                <input id="company" name="company" autocomplete="organization" maxlength="160" placeholder="Mi empresa S.A." />
+              </div>
+              <div class="field">
+                <label for="date">Fecha preferida *</label>
+                <input id="date" name="date" type="date" required />
+              </div>
+              <div class="field">
+                <label for="time">Hora preferida *</label>
+                <input id="time" name="time" type="time" required />
+              </div>
+              <div class="field full">
+                <label for="reason">Motivo de la cita *</label>
+                <select id="reason" name="reason" required>
+                  <option value="">Selecciona una opción</option>
+                  <option value="Odoo ERP y facturación electrónica">Odoo ERP y facturación electrónica</option>
+                  <option value="Desarrollo web y e-commerce">Desarrollo web y e-commerce</option>
+                  <option value="DevOps, nube y automatización">DevOps, nube y automatización</option>
+                  <option value="Soporte y mantenimiento mensual">Soporte y mantenimiento mensual</option>
+                  <option value="Demostración de la plataforma">Demostración de la plataforma</option>
+                  <option value="Otro requerimiento">Otro requerimiento</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="notes">Notas adicionales (opcional)</label>
+                <textarea id="notes" name="notes" maxlength="2000" placeholder="Cuéntanos brevemente sobre tu proyecto, horarios o requerimientos."></textarea>
+              </div>
+            </div>
+
+            <div id="status" class="status" role="status" aria-live="polite"></div>
+            <button id="submit" class="btn btn-primary" type="submit">Agendar cita técnica</button>
+          </form>
+        </section>
+
+        <aside class="side">
+          <div class="card">
+            <h3>¿Qué incluye la cita?</h3>
+            <ul>
+              <li>Diagnóstico inicial de tu necesidad.</li>
+              <li>Recomendación de arquitectura o módulos Odoo.</li>
+              <li>Estimación de alcance y siguientes pasos.</li>
+              <li>Duración aproximada: 30 minutos.</li>
+            </ul>
+          </div>
+          <div class="contact-box">
+            <h3>¿Prefieres escribirnos?</h3>
+            <p>Atención directa por WhatsApp de lunes a viernes.</p>
+            <p>
+              <a
+                href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20quiero%20agendar%20una%20asesor%C3%ADa."
+                target="_blank"
+                rel="noopener"
+              >+502 2300-0000</a>
+            </p>
+            <p><a href="/checkout">Ver catálogo y precios</a></p>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <a
+      class="floating-wa"
+      href="https://wa.me/50223000000?text=Hola%20Trebol4Devop%2C%20quiero%20agendar%20una%20asesor%C3%ADa."
+      target="_blank"
+      rel="noopener"
+      aria-label="Contactar por WhatsApp"
+    >WhatsApp</a>
+
+    <footer class="shell">
+      Trebol4Devop · Asesoría técnica · Facturación y CRM en Odoo
+    </footer>
+
+    <script>
+      (() => {
+        "use strict";
+        const form = document.getElementById("appointment-form");
+        const status = document.getElementById("status");
+        const submit = document.getElementById("submit");
+        const params = new URLSearchParams(location.search);
+        const back = params.get("back") || "";
+
+        function showStatus(message, type) {
+          status.textContent = message;
+          status.className = `status show ${type}`;
+          status.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+
+        function resetForm() {
+          form.reset();
+          const date = document.getElementById("date");
+          if (date) date.min = new Date().toISOString().slice(0, 10);
+        }
+
+        const today = new Date().toISOString().slice(0, 10);
+        const dateInput = document.getElementById("date");
+        if (dateInput) dateInput.min = today;
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          if (!form.reportValidity()) return;
+
+          const data = new FormData(form);
+          const payload = {
+            name: String(data.get("name") || "").trim(),
+            email: String(data.get("email") || "").trim(),
+            phone: String(data.get("phone") || "").trim(),
+            company: String(data.get("company") || "").trim(),
+            date: String(data.get("date") || "").trim(),
+            time: String(data.get("time") || "").trim(),
+            reason: String(data.get("reason") || "").trim(),
+            notes: String(data.get("notes") || "").trim(),
+          };
+
+          submit.disabled = true;
+          submit.textContent = "Enviando solicitud…";
+          status.className = "status";
+
+          try {
+            const response = await fetch("/api/checkout/appointment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            const body = await response.json().catch(() => ({}));
+            if (!response.ok || body.ok === false) {
+              throw new Error(body.error || `No se pudo agendar la cita (HTTP ${response.status})`);
+            }
+
+            const result = body.data || {};
+            showStatus(
+              `¡Solicitud recibida! Referencia: ${result.reference || result.leadName || "registrada"}. ` +
+                `Te contactaremos a ${payload.email} para confirmar la videollamada.`,
+              "ok",
+            );
+            resetForm();
+            if (back) {
+              const link = document.createElement("a");
+              link.href = back;
+              link.className = "btn btn-ghost";
+              link.style.marginTop = "12px";
+              link.textContent = "Volver a la tienda";
+              status.appendChild(document.createElement("br"));
+              status.appendChild(link);
+            }
+          } catch (error) {
+            showStatus(
+              error instanceof Error ? error.message : "No se pudo agendar la cita. Intenta de nuevo.",
+              "error",
+            );
+          } finally {
+            submit.disabled = false;
+            submit.textContent = "Agendar cita técnica";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

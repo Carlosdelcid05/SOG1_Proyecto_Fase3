@@ -80,12 +80,75 @@ export async function findOrCreatePartner(
   const existing = await findPartnerByEmail(email);
   if (existing) {
     const updates: Record<string, unknown> = {};
-    if (input.phone && !existing.phone) updates.phone = input.phone;
-    if (input.vat && !existing.vat) updates.vat = input.vat;
-    if (input.street && !existing.street) updates.street = input.street;
-    if (input.city && !existing.city) updates.city = input.city;
+
+    const cleanName = input.name?.trim();
+    if (cleanName && cleanName !== existing.name && !existing.is_company) {
+      updates.name = cleanName;
+    }
+
+    const cleanPhone = input.phone?.trim();
+    if (cleanPhone && cleanPhone !== (existing.phone || "")) {
+      updates.phone = cleanPhone;
+    }
+
+    const cleanVat = input.vat?.trim();
+    if (cleanVat && cleanVat !== (existing.vat || "")) {
+      updates.vat = cleanVat;
+    }
+
+    const cleanStreet = input.street?.trim();
+    if (cleanStreet && cleanStreet !== (existing.street || "")) {
+      updates.street = cleanStreet;
+    }
+
+    const cleanCity = input.city?.trim();
+    if (cleanCity && cleanCity !== (existing.city || "")) {
+      updates.city = cleanCity;
+    }
+
+    const cleanCompany = input.company?.trim();
+    if (cleanCompany) {
+      if (existing.parent_id) {
+        const parentId = existing.parent_id[0];
+        const currentParentName = existing.parent_id[1];
+        if (currentParentName !== cleanCompany) {
+          await executeKw("res.partner", "write", [
+            [parentId],
+            { name: cleanCompany },
+          ]);
+        }
+      } else {
+        const companies = await searchRead<{ id: number }>(
+          "res.partner",
+          [
+            ["name", "=ilike", cleanCompany],
+            ["is_company", "=", true],
+          ],
+          ["id"],
+          { limit: 1 },
+        );
+        let companyId = companies[0]?.id;
+        if (!companyId) {
+          const country = await countryId();
+          companyId = await create("res.partner", {
+            name: cleanCompany,
+            is_company: true,
+            vat: cleanVat || false,
+            email,
+            phone: cleanPhone || false,
+            street: cleanStreet || false,
+            city: cleanCity || false,
+            country_id: country || false,
+            customer_rank: 1,
+          });
+        }
+        updates.parent_id = companyId;
+      }
+    }
+
     if (Object.keys(updates).length > 0) {
       await executeKw("res.partner", "write", [[existing.id], updates]);
+      Object.assign(existing, updates);
     }
     return existing;
   }

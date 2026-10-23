@@ -13,6 +13,7 @@
                     <field name="x_wix_order_number" readonly="1"/>
                     <field name="x_wix_order_id" readonly="1"/>
                     <field name="x_channel" readonly="1"/>
+                    <field name="x_payment_method" readonly="1"/>
                     <field name="x_web_stage"/>
                     <field name="client_order_ref" readonly="1"/>
                 </group>
